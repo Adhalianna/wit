@@ -6,7 +6,9 @@
     author: "Natallia Goc"
 )
 
-#set text(font: "New Computer Modern", size: 11pt)
+// ------ GLOBAL STYLE ------
+
+#set text(size: 11pt)
 
 // ------ TITLE PAGE ------
 
@@ -37,6 +39,39 @@ support it. The goal of the thesis is to research the possibility of developing 
 system that could be used by software developers working on multiple git repositories to create links between those
 repositories that would maintain referential integrity in a version-conscious manner.
 
+==== Inter-project knowledge sharing over different organization structures
+
+- Within a single team working on multiple projects.
+- Between multiple teams working on their projects in a single organization (company, NGO).
+- Between multiple organizations that share one or more projects.
+    - "Then again, trust is not static; it is a dynamic process that evolves
+        according to the development of the relationship (Clegg, 2000). Hence, an unsuccessful
+        alliance could end in separation." #cite("strategic_alliances_and_knowledge_sharing")
+- Between multiple organizations which work on their projects separately but which share some knowledge between
+    projects.
+
+==== Loose thoughts
+
+To self: The interdependence and cooperative vs competetive context are discussed in #cite("modeling_high_quality_knowledge_sharing")
+
+Cooperative contexts are more likely to result in high-quality knowledge sharing *[TODO: add citation]*.
+Competetive context might result from a "negative interdependence" *[TODO: add citation]* which may result from
+belonging to different projects or organizations.
+
+==== Knowledge sharing barriers related to knowledge ownership and access to knowledge
+
+- Unwilingess to give up power associated with knowledge #cite("unwilingness_to_share_knowledge_study_turkey")
+- Conflicts, especially with a sense of unfairness on one of the ends of the relation, leading to a
+    hesitance to share knowledge #cite("unwilingness_to_share_knowledge_study_turkey")
+    - Knowledge dissemination might lead to loosing the information about the original contributor which in turn
+        may result in the contributor not being acknowledged by an organization.
+- Security risks associated with certain information #cite("unwilingness_to_share_knowledge_study_turkey")
+
+==== Relevant recomendations and solutions to knowledge sharing barriers
+
+- Assuring no disadvantage after sharing the knowledge
+
+
 == Goals
 
 Design and implement a protocol for a distributed wiki using git (libgit2) for version control and evaluate its
@@ -55,4 +90,4 @@ content related to another repository in the system should be verified by the pr
 
 // ------ BIBLIOGRAPHY ------
 
-#bibliography("bibliography.yml", style: "ieee")
+#bibliography("bibliography.yml")

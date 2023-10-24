@@ -1,7 +1,45 @@
-harry:
-    type: Book
-    title: Harry Potter and the Order of the Phoenix
-    author: Rowling, J. K.
-    volume: 5
-    page-total: 768
-    date: 2003-06-21
+modeling_high_quality_knowledge_sharing:
+    type: article
+    title: "Modeling High-Quality Knowledge Sharing in cross-functional software developement teams"
+    author:
+        - Shahla Ghobadi
+        - John D'Ambra
+
+strategic_alliances_and_knowledge_sharing:
+    type: article
+    title: "Strategic alliances and knowledge sharing: synergies or silos?"
+    author:
+        - Julia Connell
+        - Ranjit Voola
+    doi: 10.1108/13673270710752108
+    date: 2007-06-05
+    parent:
+        type: periodical
+        title: "Journal of Knowledge Management"
+        issn:  1367-3270
+    volume: 11
+    issue: 3
+    page-range: 52-66 
+
+knowledge_sharing_barriers_case_study_turkey: &knowledge_sharing_barriers_case_study_turkey
+    type: article
+    title: "Knowledge sharing barriers in software development teams: a multiple case study  in Turkey"
+    doi: "10.1108/K-04-2016-0081"
+    author:
+        - Ali Ekber Akgün
+        - Halit Keskin
+        - Hayat Ayar
+        - Zeki Okunakol
+    date: 2017-04-03
+    parent:
+        type: periodical
+        title: "Kybernetes"
+        publisher: Emerald Group Publishing Limited        
+    volume: 43
+    issue: 4
+
+unwilingness_to_share_knowledge_study_turkey:
+    type: chapter
+    chapter: 4
+    page-range: 15-21
+    parent: *knowledge_sharing_barriers_case_study_turkey
