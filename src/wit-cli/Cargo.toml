@@ -1,6 +1,11 @@
 [package]
-name = "wit"
+name = "wit-cli"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+wit-client = { path = "../wit-client" }
+
+[[bin]]
+name = "wit"
+path = "src/main.rs"

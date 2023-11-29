@@ -37,6 +37,10 @@ Challenges of the architecture described by @architecture_concept2:
 - Limiting the amount of data cloned into a single project
 - Conflicts can occur
 
+== Federation communication protocol
+
+#figure(image("communication-protocol1.svg"))
+
 == CLI utility design
 
 === User personas

@@ -1,0 +1,24 @@
+[package]
+name = "integration-tests"
+description = "tests for the wit project"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dev-dependencies]
+wit-cli = { path = "../src/wit-cli" }
+wit-client = { path = "../src/wit-client" }
+wit-server = { path = "../src/wit-server" }
+[dependencies]
+git2 = { workspace = true }
+rand = { version = "0.8.5" }
+
+[lib]
+name = "common"
+path = "common.rs"
+doctest = false
+test = false
+
+[[test]]
+name = "wit-server-test"
+path = "wit-server.rs"

@@ -10,4 +10,11 @@ default = ["vendored"]
 vendored = ["git2/vendored-libgit2", "git2/vendored-openssl"]
 
 [dependencies]
-git2 = {workspace = true}
+git2 = { workspace = true }
+clap = { workspace = true }
+serde = { workspace = true }
+toml = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+axum = { version = "0.7.1", features = ["tracing"] }
