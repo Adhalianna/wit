@@ -7,12 +7,15 @@ render-design-svg:
 render-design: render-design-svg
    cd doc/design && \
     typst compile design.typ
-    
+
 render-paper:
     cd doc/paper && \
-    typst compile paper.typ    
+    typst compile paper.typ
 
 render-seminar-resources:
     cd doc/seminar && \
     typst compile presentation1.typ && \
     typst compile presentation2.typ --root ../.
+
+test:
+    RUST_BACKTRACE=1 cargo test -- --nocapture
