@@ -7,6 +7,8 @@ pub static DEFAULT_WIT_DIR: &'static str = ".wit";
 
 /// # Safety
 /// In case of `file://` URLs perform only on paths to existing files and directories
+// TODO: handle the error that happens when file:// url points to non-existing
+// place. The error should be returned for the user to handle.
 fn canonicalize_url(url: &str) -> String {
     let mut canonical = url.to_string();
     match url {
