@@ -11,7 +11,7 @@ pub fn run(storage_path: &str) {
     );
     let storage_path = Path::new(storage_path);
     let full_path = storage_path.canonicalize().unwrap();
-    
+
     println!("Running at {}", full_path.to_str().unwrap());
     start_server();
 }
@@ -25,7 +25,7 @@ pub fn start_server() {
         .unwrap()
         .block_on(async {
             let tcp_listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-            
+
             axum::serve(tcp_listener, main_router).await.unwrap();
         })
 }

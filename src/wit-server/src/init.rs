@@ -78,8 +78,15 @@ pub fn init(
     if force {
         unimplemented!()
     }
-    
-    let git_repo = git2::Repository::init(storage_path).map_err(|e| InitError::GitInit(e))?;
+
+    let git_repo = git2::Repository::init_opts(
+        storage_path,
+        git2::RepositoryInitOptions::new()
+            .bare(true)
+            .description("wit wiki repository")
+            .initial_head("main"),
+    )
+    .map_err(|e| InitError::GitInit(e))?;
 
     git_repo
         .add_ignore_rule(METADATA_FILENAME)
@@ -121,10 +128,6 @@ pub fn init(
     let mut git_index = git_repo.index().unwrap();
 
     create_metadata_file(storage_path)?;
-
-    git_index
-        .add_path(&(std::path::Path::new(METADATA_FILENAME)))
-        .unwrap();
 
     let commit_tree_oid = git_index
         .write_tree()

@@ -14,4 +14,5 @@ render-paper:
 
 render-seminar-resources:
     cd doc/seminar && \
-    typst compile presentation1.typ
+    typst compile presentation1.typ && \
+    typst compile presentation2.typ --root ../.

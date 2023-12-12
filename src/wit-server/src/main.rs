@@ -31,7 +31,7 @@ enum Command {
         /// Force initialization of a new wiki even when files indicating existence of other wiki exist.
         #[arg(short = 'f', long)]
         force: bool,
-        
+
         /// Username used in commits made by the wit server. If not provided the application will attempt to set one from the default git configuration on the system.
         #[arg(short = 'U', long, value_name = "USERNAME")]
         git_user_name: Option<String>,

@@ -17,7 +17,8 @@ pub fn hi() {
         .output()
         .unwrap();
     wit_client::init_submodule(&client_path, None, &("file://".to_string() + &server_path));
-    std::fs::File::create(client_path.clone() + "/" + wit_client::DEFAULT_WIT_DIR + "/empty.md").unwrap();
+    std::fs::File::create(client_path.clone() + "/" + wit_client::DEFAULT_WIT_DIR + "/empty.md")
+        .unwrap();
     wit_client::add_files(&client_path, &["empty.md"]);
     wit_client::commit(&client_path, "test commit");
     wit_client::push(&client_path);
