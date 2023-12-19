@@ -1,21 +1,22 @@
 render-design-svg:
-    cd doc/design && \
+    cd docs/design && \
     d2 --layout dagre --pad 5 architecture-concept1.d2 architecture-concept1.svg && \
     d2 --layout dagre --pad 5 architecture-concept2.d2 architecture-concept2.svg && \
     d2 --layout dagre --pad 5 communication-protocol1.d2 communication-protocol1.svg
 
 render-design: render-design-svg
-   cd doc/design && \
+   cd docs/design && \
     typst compile design.typ
 
 render-paper:
-    cd doc/paper && \
+    cd docs/paper && \
     typst compile paper.typ
 
 render-seminar-resources:
-    cd doc/seminar && \
+    cd docs/seminar && \
     typst compile presentation1.typ && \
-    typst compile presentation2.typ --root ../.
+    d2 --layout dagre architecture-simple.d2 --pad 0 && \
+    typst compile presentation2.typ --root ../. 
 
 test:
     RUST_BACKTRACE=1 cargo test -- --nocapture

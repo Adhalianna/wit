@@ -38,7 +38,9 @@ pub fn start_server(git_repo: git2::Repository) {
         .build()
         .unwrap()
         .block_on(async {
-            let tcp_listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+            let tcp_listener = tokio::net::TcpListener::bind("localhost:3000")
+                .await
+                .unwrap();
 
             axum::serve(tcp_listener, main_router).await.unwrap();
         })

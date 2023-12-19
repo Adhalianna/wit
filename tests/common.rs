@@ -1,4 +1,4 @@
-use std::{fs, path::Path};
+use std::{fs, path::Path, sync::Mutex};
 
 static INIT: std::sync::Once = std::sync::Once::new();
 
@@ -41,25 +41,62 @@ pub fn new_test_server_path() -> String {
     test_dir() + SERVERS_DIR + "server" + &rand::random::<u8>().to_string()
 }
 
-/// If `keep_running` then the server will be spawned as a background process,
-/// otherwise it will execute to finish with `--do-not-run` passed.
-pub fn init_test_server(at: &str, keep_running: bool) {
-    // Run directly from cargo package. Since server is not exposed
-    // as library, using the cli feels more appropiate.
-    let mut cmd = std::process::Command::new("cargo");
-    cmd.arg("run")
-        .arg("--quiet")
-        .args(["--package", "wit-server"])
-        .arg("--")
-        // the server command params:
-        .arg("init")
-        .args(["-s", at])
-        .args(["-U", "TEST"])
-        .args(["-E", "test@example.com"]);
-    if keep_running {
-        cmd.spawn().unwrap();
-    } else {
-        cmd.arg("-n"); // short for --do-not-run
-        cmd.output().unwrap();
+/// Allow only single server process to exist at once (we do no means of
+/// asserting bound address uniqness at the moment).
+static SERVER_PROCESS: Mutex<Option<std::process::Child>> = Mutex::new(None);
+
+pub struct TestServerHandle<'a> {
+    storage_path: String,
+    process: Option<std::sync::MutexGuard<'a, Option<std::process::Child>>>,
+}
+
+impl<'a> TestServerHandle<'a> {
+    pub fn init(at: &str) -> Self {
+        // Run directly from cargo package. Since server is not exposed
+        // as library, using the cli feels more appropiate.
+        let mut cmd = std::process::Command::new("cargo");
+        cmd.arg("run")
+            .arg("--quiet")
+            .args(["--package", "wit-server"])
+            .arg("--")
+            // the server command params:
+            .arg("init")
+            .args(["-s", at])
+            .args(["-U", "TEST"])
+            .args(["-E", "test@example.com"])
+            .arg("-n") // short for --do-not-run
+            .output()
+            .unwrap();
+        Self {
+            storage_path: at.to_owned(),
+            process: None,
+        }
+    }
+    pub fn run(&mut self) {
+        self.process = Some(SERVER_PROCESS.lock().unwrap());
+        self.process.as_mut().unwrap().replace(
+            std::process::Command::new("cargo")
+                .arg("run")
+                .arg("--quiet")
+                .args(["--package", "wit-server"])
+                .arg("--")
+                .args(["-s", &self.storage_path])
+                .spawn()
+                .unwrap(),
+        );
+    }
+    pub fn storage_path(&self) -> &str {
+        &self.storage_path
+    }
+}
+
+impl<'a> Drop for TestServerHandle<'a> {
+    fn drop(&mut self) {
+        match self.process.as_mut() {
+            Some(process) => {
+                process.as_mut().unwrap().kill().unwrap();
+            }
+            None => {}
+        }
     }
 }
