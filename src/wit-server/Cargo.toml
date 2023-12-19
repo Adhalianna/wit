@@ -17,4 +17,5 @@ toml = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 thiserror = { workspace = true }
 tokio = { workspace = true }
-axum = { version = "0.7.1", features = ["tracing"] }
+axum = { version = "0.7.1", features = ["tracing", "macros"] }
+url = { workspace = true, features = ["serde"] }

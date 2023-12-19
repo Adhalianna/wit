@@ -1,5 +1,7 @@
-use axum::Router;
-use std::path::Path;
+use std::{path::Path, sync::Arc};
+use tokio::sync::Mutex;
+
+pub mod get;
 
 pub fn run(storage_path: &str) {
     let git_repo = git2::Repository::open(&storage_path).expect(
@@ -13,11 +15,23 @@ pub fn run(storage_path: &str) {
     let full_path = storage_path.canonicalize().unwrap();
 
     println!("Running at {}", full_path.to_str().unwrap());
-    start_server();
+    start_server(git_repo);
 }
 
-pub fn start_server() {
-    let main_router = Router::new();
+#[derive(Clone, axum::extract::FromRef)]
+pub struct ServerState {
+    git_repo: Arc<Mutex<git2::Repository>>,
+}
+
+pub fn start_server(git_repo: git2::Repository) {
+    let state = ServerState {
+        git_repo: Arc::new(Mutex::new(git_repo)),
+    };
+
+    let main_router = axum::Router::new()
+        .route("/favicon.ico", axum::routing::any(|| async { "not set" }))
+        .route("/:file_path", axum::routing::get(get::get))
+        .with_state(state);
 
     tokio::runtime::Builder::new_multi_thread()
         .enable_all()

@@ -1,0 +1,68 @@
+direction: down
+
+devenv: Local Git Repository Environment {
+    style.fill: transparent
+    style.stroke-dash: 6
+    style.stroke: transparent
+
+    user: User {
+        shape: person 
+        width: 100
+        height: 120
+    }
+            
+    cli: CLI utility {
+        shape: square
+    }
+            
+    user -> repo: writes changes to
+    user -> repo.submodule: writes changes to
+    user -> cli: uses
+    cli -> repo.submodule: acts on
+    
+    repo: Git Repository {
+        shape: stored_data
+        
+        code1: ''
+        code1.shape: stored_data
+    
+        code2: ''
+        code2.shape: stored_data
+    
+        submodule: wit submodule
+        submodule.shape: stored_data
+        submodule.style.stroke: blue 
+    }
+}
+
+devenv.cli --> remotes.remote1: synchronizes to
+
+remotes: Remote servers {
+    style.fill: transparent
+    style.stroke-dash: 6
+    shape: cloud
+
+    remote1: Wit Server {
+        shape: rectangle
+        repo: wit repository
+        repo.shape: stored_data
+        repo.style.stroke: blue
+    }
+    remote2: Wit Server {
+        shape: rectangle
+        repo: ''
+        repo.shape: stored_data
+        repo.style.stroke: red
+    }
+    remote3: Wit Server {
+        shape: rectangle
+        repo: ''
+        repo.shape: stored_data
+        repo.style.stroke: green
+    }
+    remote1 <-> remote2: federated
+    remote1 <-> remote3
+}
+
+
+

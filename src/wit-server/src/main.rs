@@ -8,6 +8,9 @@ use init::init;
 pub mod server;
 use server::run;
 
+pub mod local;
+pub mod remote;
+
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 struct Cli {

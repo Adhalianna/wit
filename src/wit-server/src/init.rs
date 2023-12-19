@@ -1,4 +1,5 @@
 use crate::wiki_meta::WikiMetadata;
+use std::fs;
 use std::io::Write;
 
 /// Name of the file storing metadata of the wit wiki
@@ -49,6 +50,8 @@ pub fn create_metadata_file(storage_path: &str) -> Result<(), InitError> {
             toml::to_string(&WikiMetadata {
                 id: id.as_simple().encode_lower(&mut buf),
                 description: None,
+                key: None,
+                favicon: None,
             })
             .unwrap()
             .as_bytes(),
@@ -69,6 +72,7 @@ pub fn create_metadata_file(storage_path: &str) -> Result<(), InitError> {
     Ok(())
 }
 
+/// If `force` then overwrite existing server data.
 pub fn init(
     force: bool,
     storage_path: &str,
@@ -78,6 +82,10 @@ pub fn init(
     if force {
         unimplemented!()
     }
+
+    // make sure target directory exists and create it
+    // if it's just one level of depth missing
+    let _ = fs::create_dir(storage_path);
 
     let git_repo = git2::Repository::init_opts(
         storage_path,

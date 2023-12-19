@@ -1,4 +1,3 @@
-use std::borrow::BorrowMut;
 use std::io::{Read, Write};
 use std::path::Path;
 
@@ -149,12 +148,25 @@ pub fn commit(repo_at: &str, msg: &str) {
 
 pub fn push(repo_at: &str) {
     let git_repo = git2::Repository::discover(repo_at).unwrap();
-    let mut submodule = git_repo.find_submodule(WIT_MODULE_NAME).unwrap();
+    let submodule = git_repo.find_submodule(WIT_MODULE_NAME).unwrap();
     let submodule_repo = submodule.open().unwrap();
     let mut remote = submodule_repo.find_remote("origin").unwrap();
+
     remote.connect(git2::Direction::Push).unwrap();
+    let mut callbacks = git2::RemoteCallbacks::new();
+
+    callbacks.push_update_reference(|reference, status| match status {
+        Some(status) => {
+            panic!("failed to push to ref {reference} with {status}");
+        }
+        None => Ok(()),
+    });
+
     remote
-        .push(&["refs/heads/main:refs/remotes/origin/main"], None)
+        .push(
+            &["refs/heads/main"],
+            Some(git2::PushOptions::new().remote_callbacks(callbacks)),
+        )
         .unwrap();
 }
 
