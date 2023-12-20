@@ -46,13 +46,13 @@ repositories that would maintain referential integrity in a version-conscious ma
 - Between multiple organizations that share one or more projects.
     - "Then again, trust is not static; it is a dynamic process that evolves
         according to the development of the relationship (Clegg, 2000). Hence, an unsuccessful
-        alliance could end in separation." #cite("strategic_alliances_and_knowledge_sharing")
+        alliance could end in separation." @strategic_alliances_and_knowledge_sharing
 - Between multiple organizations which work on their projects separately but which share some knowledge between
     projects.
 
 ==== Loose thoughts
 
-To self: The interdependence and cooperative vs competetive context are discussed in #cite("modeling_high_quality_knowledge_sharing")
+To self: The interdependence and cooperative vs competetive context are discussed in @modeling_high_quality_knowledge_sharing
 
 Cooperative contexts are more likely to result in high-quality knowledge sharing *[TODO: add citation]*.
 Competetive context might result from a "negative interdependence" *[TODO: add citation]* which may result from
@@ -60,17 +60,29 @@ belonging to different projects or organizations.
 
 ==== Knowledge sharing barriers related to knowledge ownership and access to knowledge
 
-- Unwilingess to give up power associated with knowledge #cite("unwilingness_to_share_knowledge_study_turkey")
+- Unwilingess to give up power associated with knowledge @unwilingness_to_share_knowledge_study_turkey
 - Conflicts, especially with a sense of unfairness on one of the ends of the relation, leading to a
-    hesitance to share knowledge #cite("unwilingness_to_share_knowledge_study_turkey")
+    hesitance to share knowledge @unwilingness_to_share_knowledge_study_turkey
     - Knowledge dissemination might lead to loosing the information about the original contributor which in turn
         may result in the contributor not being acknowledged by an organization.
-- Security risks associated with certain information #cite("unwilingness_to_share_knowledge_study_turkey")
+- Security risks associated with certain information @unwilingness_to_share_knowledge_study_turkey
 
 ==== Relevant recomendations and solutions to knowledge sharing barriers
 
 - Assuring no disadvantage after sharing the knowledge
 
+==== Implementation
+
+Possibly relevant:
+- similar attempt on general files stored in a dedicated database @version_in_federated_database
+- very similar domain but the goal is to integrate multiple previously existing services @open_web_application_lifecycle
+- more of similar problems but in an overview @version_control_in_distributed_software
+- an overview of distributed version control systems @analysis_of_distributed_version_control
+
+==== Theory to remember
+
+- _CAP theorem_ - distributed system cannot be completely consistent (C), available (A),
+    and tolerant of network partitions (P) all at the same time. *[TODO: add citation]*
 
 == Goals
 
@@ -79,6 +91,7 @@ suitability for use in organizations that work on their projects using multiple 
 well as synchronize some knowledge between those projects. The application (implementation) should be approachable to
 software developers and integrate well with their daily workflow which includes frequent use of git. Hyperlinks to
 content related to another repository in the system should be verified by the provided tooling.
+
 
 #pagebreak()
 

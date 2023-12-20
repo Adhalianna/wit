@@ -1,9 +1,9 @@
 direction: down
 
-devenv: Local Git Repository Environment {
+devenv: Local Developer Environment {
     style.fill: transparent
     style.stroke-dash: 6
-    style.stroke: transparent
+    style.stroke: gray
 
     user: User {
         shape: person 
@@ -15,9 +15,8 @@ devenv: Local Git Repository Environment {
         shape: square
     }
             
-    user -> repo: writes changes to
-    user -> repo.submodule: writes changes to
     user -> cli: uses
+    user -> repo.submodule: writes changes to
     cli -> repo.submodule: acts on
     
     repo: Git Repository {
@@ -44,18 +43,24 @@ remotes: Remote servers {
 
     remote1: Wit Server {
         shape: rectangle
+        style.stroke: blue
+        
         repo: wit repository
         repo.shape: stored_data
         repo.style.stroke: blue
     }
     remote2: Wit Server {
         shape: rectangle
+        style.stroke: red
+
         repo: ''
         repo.shape: stored_data
         repo.style.stroke: red
     }
     remote3: Wit Server {
         shape: rectangle
+        style.stroke: green
+
         repo: ''
         repo.shape: stored_data
         repo.style.stroke: green

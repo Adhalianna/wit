@@ -1,3 +1,61 @@
+version_in_federated_database:
+    type: article
+    title: "Version Propagation in Federated Database Systems"
+    author:
+        - Martin Schönhoff
+        - Markus Strässler
+        - Klaus R. Dittrich
+    doi: 10.1109/IDEAS.2001.938085
+    isbn: 0-7695-1140-6
+    page-range: 189-198
+    publisher: IEEE
+    date: 2002-08-07
+    parent:
+        type: proceedings
+        date: 2001-07-16
+        location: Grenoble, France
+        title: "Proceedings 2001 International Database Engineering and Applications Symposium"
+
+open_web_application_lifecycle:
+    type: article
+    title: Federated Application Lifecycle Management Based on an Open Web Architecture
+    author:
+        - Florian Matthes
+        - Christian Neubert
+        - Alexander Steinhoff
+    archive: Citeseer
+    parent:
+        type: conference
+        title: Workshop Design for Future–Langlebige Softwaresysteme, GI-Arbeitskreis Langlebige Softwaresysteme (L2S2)
+        date: 2009
+        location: Karlsruhe, Germany
+
+version_control_in_distributed_software:
+    type: article
+    title: "Version Control in Distributed Software Development: a Systematic Mapping Study"
+    author:
+        - Catarina Costa
+        - Leonardo Murta
+    date: 2013-09-30
+    isbn: 978-0-7695-5057-2
+    publisher: IEEE
+    doi: 10.1109/ICGSE.2013.19
+    page-range: 90-99
+    parent:
+        type: conference
+        date: 2013-08-26
+        title: 2013 IEEE 8th International Conference on Global Software Engineering
+        location: Bari, Italy
+
+analysis_of_distributed_version_control:
+    type: thesis
+    title: "Analysis and Comparison of Distributed Version Control Systems"
+    author:
+        - Daniel Knittl-Frank
+    date: 2010-06
+    location: Hagenberg, Austria
+    publisher: University of Applied Sciences, Upper Austria
+
 modeling_high_quality_knowledge_sharing:
     type: article
     title: "Modeling High-Quality Knowledge Sharing in cross-functional software developement teams"
@@ -34,7 +92,7 @@ knowledge_sharing_barriers_case_study_turkey: &knowledge_sharing_barriers_case_s
     parent:
         type: periodical
         title: "Kybernetes"
-        publisher: Emerald Group Publishing Limited        
+        publisher: Emerald Group Publishing Limited
     volume: 43
     issue: 4
 

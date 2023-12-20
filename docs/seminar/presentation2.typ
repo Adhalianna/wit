@@ -53,6 +53,10 @@
 
 #figure(image("./architecture-simple.svg", height: 80%))
 
+= Architecture
+
+#figure(image("./web-interaction.svg", height: 80%))
+
 = CLI client design goals
 
 - *`git status` → `wit status`* - show uncommitted changes to the wiki 
@@ -70,10 +74,12 @@
 
 #align(center)[
     ```
-    [<server-name>:]<file-path>[#<section>]
+    @@[<server-name>:]<file-path>[#<section>]@@
     ```
 ]
 
+- the in-file format
+- should be easy to extract from any file format
 - reference content in external or local server
 - translated on render by the HTTP web server component
 
@@ -87,7 +93,7 @@
 ]
 
 Problems:
-- branches (possibly) not supported
+- branches (most likely) not supported
 - escaping within each supported file format to avoid breaking
     syntax highlighting tools
 - the version string?
@@ -95,7 +101,7 @@ Problems:
 = Versioning in distributed context
 
 *Version vector*
-- initially all vector counter are zero
+- initially all vector counters are zero
 - each time a replica experiences an update, it increments its own counter in
     the vector by one
 - each time replicas synchronize, they set elements in their copy of the
@@ -113,10 +119,29 @@ Limitations of version vector:
 Alternatives:
 - version stamps
     - assumes replicas join and fork
+    - representation can reduce on join
+    - tracks causality
 - interval tree clocks
     - assumes replicas joind and fork
     - no global identifiers => version string not universal between servers
     
+= Versioning in git repositories
+
+- `601a610120ac669abaa1022996b616ceeab282dd` #linebreak()
+    SHA1 uniquely identifying commit in a repository.
+- `601a610` #linebreak()
+    The same commit reference abbreviated to uniquely identifying prefix.
+    (Variable length, Linux kernel needs 12 characters now.)
+- causality is not reflected in the representation
+
+= New layer of versioning
+
+Possible solutions to explore:
+- keep a database mapping global version to a local (git) version
+- limit versions to work for a single remote only
+- use a solution based on distributed ledger (not-a-crypto-currency blockchain)
+- create a distributed snapshot on each commit (Chandy-Lamport algorithm) and collect it before operation finishes
+
 = Paper goals
 
 - evaluate the overhead introduced by using a distributed wiki as
