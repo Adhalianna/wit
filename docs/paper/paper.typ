@@ -78,11 +78,15 @@ Possibly relevant:
 - very similar domain but the goal is to integrate multiple previously existing services @open_web_application_lifecycle
 - more of similar problems but in an overview @version_control_in_distributed_software
 - an overview of distributed version control systems @analysis_of_distributed_version_control
+- a useful introduction into distributed ledger technologies @review_distributed_ledger
+- half of the job done, someone tried to make git actually distributed using distributed ledger @decentralized_git_version_control but their use case and goals were different.
 
-==== Theory to remember
+==== Theory to remember / research
 
 - _CAP theorem_ - distributed system cannot be completely consistent (C), available (A),
     and tolerant of network partitions (P) all at the same time. *[TODO: add citation]*
+- _Byzantine fault-tolerance_
+- _Sybil attack_
 
 == Goals
 

@@ -26,7 +26,7 @@ Benefits of the architecture described by @architecture_concept1:
 - Limited access to files managed by other projects
 - Connflicts cannot occur as files are not shared
 
-=== Git-like single remote
+=== Git-like distribution with single remote
 
 #figure(image("architecture-concept2.svg", fit: "contain", height: 70%), caption: [
     Wit operating just like git.
@@ -55,11 +55,11 @@ Challenges not addressed yet:
 
 == Link syntax
 
-[remote-name, hostname, defaults to local]/[file]\#[file section]
+```
+wit://[<remote-name>][@<version>]/<file-path>[#<file-section>]
+```
 
-== CLI utility design
-
-=== User personas
+== User personas
 
 Each user persona will be built of short paragraphs explaining their goals, purpose and approach.
 
@@ -67,24 +67,38 @@ Each user persona will be built of short paragraphs explaining their goals, purp
 + *Purpose* - Why they want it?
 + *Approach* - How they want to achieve it?
 
-#linebreak()
 
-==== Software Developer working on a project that depends on other projects
+=== Software Developer working on a project that depends on other projects
 
 - The developer wants to view the wiki in a *state appropiate to the version of their project*. 
     It is important to them as they might be at the moment amending an older version of the product 
     and it is not desired to apply, for example, newer requirements to it. They plan to achieve that by setting
-    their git repository to appropiate version and (_optionally_) using a CLI utility to move the
-    wiki to the corresponding version.
+    their git repository to appropiate version.
 - The developer wants to make sure that when they create links they are valid references to the parts of the
-    wiki that are maintained as part of other projects. They want it such because they need to be aware of
+    wiki that are maintained as part of other projects. They want it such way because they need to be aware of
     significant changes to the documents they are referencing as those might invalidate what they were about to
     write on pages managed by them. They would like to be *informed of invalid links* each time they are about to
     publish changes, preferably by an IDE extension but optionally by execution of a CLI utility that can be included
-    in CI/CD pipelines or invoked by demand.
-- The developer wants to see managed by them wiki files *alongside the git repository* they are working on. *[TODO]*
+    in CI/CD pipelines or invoked on demand.
+- The developer wants to see managed by them wiki files *alongside the git repository* they are working on.
+    They want it so because their IDE is the most familiar and comfortable working environment for them and having
+    wiki in the same repository as the code will reduce the burden of a context switch between source code and
+    documentation. They plan to achieve that by having the wiki in a subdirectory of their source code repository.
 - The developer wants to easily *initialize the wiki* in a new project they are working on which depends on other
-    projects. *[TODO]*
+    projects. *They do not want the integration between projects to slow them down*. They will achieve that by using
+    a solution that can federate with other other project's wikis and requires no shared infrastructure between
+    projects.
+
+=== Manager using the wiki to oversee knowledge-sharing between projects
+
+- The manager wants to be able to browse the wiki in *pleasant graphical form*. It is important to them that the pages
+    are presentable becease it makes learning from them a much more pleasant experience. They plan to browse the pages
+    rendered to HTML through their *web browser* as that is most intuitive way of exploring wikis to them.
+- The manager wants to be able to shut down any wiki *without affecting other project's wikis*. It's important to them
+    that no data is lost even when something out of their control happens. They expect that shutting down permamently
+    one of the wikis will not affect significantly other wikis in the network.
+
+
 
 === Commands overview
 

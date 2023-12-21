@@ -1,3 +1,25 @@
+decentralized_git_version_control:
+    type: thesis
+    title: "A decentralized Git version control system – A proposed architecture and evaluation of decentralized Git using DAG-based distributed ledger"
+    author:
+        - Christian Habib
+        - Ilian Ayoub
+    date: 2022-10-14
+    page-total: 43
+    serial-number:
+        urn: urn:nbn:se:liu:diva-188656
+        isrn: LIU-IDA/LITH-EX-A--22/086--SE
+        oai: oai:DiVA.org:liu-188656
+        DiVA: diva2:1697038
+
+sharding_blockchain_with_hashgraph_for_manet:
+    type: article
+    title: "A Robust Sharding-Enabled Blockchain with Efficient Hashgraph Mechanism for MANETs"
+    url: https://doi.org/10.3390/app13158726
+    serial-number:
+        doi: 10.3390/app13158726
+    date: 2023-07-28
+
 version_in_federated_database:
     type: article
     title: "Version Propagation in Federated Database Systems"
@@ -5,8 +27,9 @@ version_in_federated_database:
         - Martin Schönhoff
         - Markus Strässler
         - Klaus R. Dittrich
-    doi: 10.1109/IDEAS.2001.938085
-    isbn: 0-7695-1140-6
+    serial-number:
+        doi: 10.1109/IDEAS.2001.938085
+        isbn: 0-7695-1140-6
     page-range: 189-198
     publisher: IEEE
     date: 2002-08-07
@@ -37,9 +60,10 @@ version_control_in_distributed_software:
         - Catarina Costa
         - Leonardo Murta
     date: 2013-09-30
-    isbn: 978-0-7695-5057-2
+    serial-number:
+        isbn: 978-0-7695-5057-2
+        doi: 10.1109/ICGSE.2013.19
     publisher: IEEE
-    doi: 10.1109/ICGSE.2013.19
     page-range: 90-99
     parent:
         type: conference
@@ -55,6 +79,26 @@ analysis_of_distributed_version_control:
     date: 2010-06
     location: Hagenberg, Austria
     publisher: University of Applied Sciences, Upper Austria
+
+review_distributed_ledger:
+    type: article
+    title: A Review of Distributed Ledger Technologies
+    authors:
+        - Nabil El Ioini
+        - Claus Pahl
+    serial-number:
+        doi: 10.1007/978-3-030-02671-4_16
+        isbn: 978-3-030-02671-4
+    date: 2018-10-18
+    page-range: 277-288
+    publisher: Springer International Publishing
+    issue: 2
+    parent:
+        type: proceedings
+        title: "On the Move to Meaningful Internet Systems. OTM 2018 Conferences: Confederated International Conferences: CoopIS, C&TC, and ODBASE 2018"
+        date: 2018-10-22
+        publisher: Springer International Publishing
+        location: Valetta, Malta
 
 modeling_high_quality_knowledge_sharing:
     type: article

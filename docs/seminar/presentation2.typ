@@ -39,9 +39,12 @@
 
 - interface similar to git
 - use of git submodules hidden from the user
-- wiki links checked before commit
+- wiki links checked for target existence before commit
 - web server for viewing wiki contents
     - URL scheme allowing viewing content of specific version
+- remotes can be freely added and removed from federation
+- remotes should not need to know about all of the remotes in federation,
+    only the ones directly referenced
 
 = Utilized git features
 
@@ -74,14 +77,12 @@
 
 #align(center)[
     ```
-    @@[<server-name>:]<file-path>[#<section>]@@
+    wit://[<server-name>:]<file-path>[#<section>]
     ```
 ]
 
-- the in-file format
-- should be easy to extract from any file format
 - reference content in external or local server
-- translated on render by the HTTP web server component
+- translated on render by the HTTP web server component to http api
 
 = URL scheme
 
@@ -120,11 +121,12 @@ Alternatives:
 - version stamps
     - assumes replicas join and fork
     - representation can reduce on join
-    - tracks causality
 - interval tree clocks
     - assumes replicas joind and fork
-    - no global identifiers => version string not universal between servers
-    
+
+Problems:
+    - no global version identifier
+
 = Versioning in git repositories
 
 - `601a610120ac669abaa1022996b616ceeab282dd` #linebreak()
@@ -136,14 +138,22 @@ Alternatives:
 
 = New layer of versioning
 
-Possible solutions to explore:
-- keep a database mapping global version to a local (git) version
-- limit versions to work for a single remote only
-- use a solution based on distributed ledger (not-a-crypto-currency blockchain)
+Solutions to explore:
+- keep a local database mapping global version to a local (git) version
+- limit version references to work for a single remote only
+- use a solution based on distributed ledger (blockchain, tangle, hashgraph or other structure)
 - create a distributed snapshot on each commit (Chandy-Lamport algorithm) and collect it before operation finishes
+
+= Distributed ledger in ad hoc network
+
+#align(center)[#image("./extra-images/dag-ledger-in-vanet.png", height: 83%)]
 
 = Paper goals
 
 - evaluate the overhead introduced by using a distributed wiki as
     opposed to other wiki software based on git (benchmarks)
 - find a good string representation of a version in the distributed context
+- discuss the possibility of extending with permissions
+- discuss all the possible decissions about architecture that arise from
+    the problem of refeferncing versions in a dynamic network of servers working
+    in federation
