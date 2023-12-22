@@ -1,5 +1,6 @@
 #let thesis_title_page(
     logo_path: none,
+    logo_width: 33%,
     university: "",
     faculty: "",
     document_type: [Diploma Project],
@@ -36,8 +37,7 @@
             [
                 #set align(center + horizon)
                 #if logo_path != none [
-                    #image(logo_path, width: 20%)
-                    #v(2em)
+                    #image(logo_path, width: 33%)
                 ]
                 #text(weight: 900)[
                     #par()[#smallcaps(university)]

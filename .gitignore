@@ -1,4 +1,5 @@
 /target
 *.pdf
 *.svg
+!AGH.svg
 Cargo.lock

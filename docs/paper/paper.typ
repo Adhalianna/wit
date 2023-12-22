@@ -9,8 +9,8 @@
 
 // ------ CONTENT ------
 #diploma(
-    university_logo_file: "agh.jpg",
-    university: "AGH University of Science and Technology",
+    university_logo_file: "AGH.svg",
+    university: "AGH University of Krakow",
     faculty: "Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical Engineering",
     titles: (paper_title, pl_paper_title),
     short_title: "Distributed Wiki on top of Git",
