@@ -1,27 +1,42 @@
-// ------ METADATA AND GLOBALS ------
+#import "diploma_template.typ": diploma
 
+// ------ GLOBAL VARIABLES ------
 #let paper_title = "Distributed Wiki on top of Git for inter-project knowledge sharing targeting software developers as users"
-#set document(
-    title: paper_title,
-    author: "Natallia Goc"
-)
+#let pl_paper_title = "Rozproszona Wiki oparta o Git do wymiany informacji między projektami skupiająca się na programistach jako użytkownikach"
 
 // ------ GLOBAL STYLE ------
+#set text(size: 12pt, font: ())
 
-#set text(size: 11pt)
-
-// ------ TITLE PAGE ------
-
-#align(center + horizon)[
-   = #paper_title
-   Natalia Goc
-]
-
-#pagebreak()
+// ------ CONTENT ------
+#diploma(
+    university_logo_file: "agh.jpg",
+    university: "AGH University of Science and Technology",
+    faculty: "Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical Engineering",
+    titles: (paper_title, pl_paper_title),
+    short_title: "Distributed Wiki on top of Git",
+    author: (
+        first_name: "Natalia",
+        second_name: "Kinga",
+        surname: "Goc",
+    ),
+    degree_programme: "Computer Science",
+    supervisor: "prof. dr. inż. Krzysztof Kluza",
+    location: "Kraków",
+    acknowledgement: lorem(10),
+    abstracts: [
+        = Summary
+        #lorem(30)
+        = Streszczenie
+        #lorem(30)
+    ],
+    bibliography_file: "bibliography.yml",
+)[
 
 // ------ SCRATCHPAD CONTENT ------
 
 = Scratchpad
+
+#lorem(100)
 
 == Intro
 
@@ -39,7 +54,7 @@ support it. The goal of the thesis is to research the possibility of developing 
 system that could be used by software developers working on multiple git repositories to create links between those
 repositories that would maintain referential integrity in a version-conscious manner.
 
-==== Inter-project knowledge sharing over different organization structures
+=== Inter-project knowledge sharing over different organization structures
 
 - Within a single team working on multiple projects.
 - Between multiple teams working on their projects in a single organization (company, NGO).
@@ -50,7 +65,7 @@ repositories that would maintain referential integrity in a version-conscious ma
 - Between multiple organizations which work on their projects separately but which share some knowledge between
     projects.
 
-==== Loose thoughts
+=== Loose thoughts
 
 To self: The interdependence and cooperative vs competetive context are discussed in @modeling_high_quality_knowledge_sharing
 
@@ -58,7 +73,7 @@ Cooperative contexts are more likely to result in high-quality knowledge sharing
 Competetive context might result from a "negative interdependence" *[TODO: add citation]* which may result from
 belonging to different projects or organizations.
 
-==== Knowledge sharing barriers related to knowledge ownership and access to knowledge
+=== Knowledge sharing barriers related to knowledge ownership and access to knowledge
 
 - Unwilingess to give up power associated with knowledge @unwilingness_to_share_knowledge_study_turkey
 - Conflicts, especially with a sense of unfairness on one of the ends of the relation, leading to a
@@ -67,11 +82,11 @@ belonging to different projects or organizations.
         may result in the contributor not being acknowledged by an organization.
 - Security risks associated with certain information @unwilingness_to_share_knowledge_study_turkey
 
-==== Relevant recomendations and solutions to knowledge sharing barriers
+=== Relevant recomendations and solutions to knowledge sharing barriers
 
 - Assuring no disadvantage after sharing the knowledge
 
-==== Implementation
+=== Implementation
 
 Possibly relevant:
 - similar attempt on general files stored in a dedicated database @version_in_federated_database
@@ -81,7 +96,7 @@ Possibly relevant:
 - a useful introduction into distributed ledger technologies @review_distributed_ledger
 - half of the job done, someone tried to make git actually distributed using distributed ledger @decentralized_git_version_control but their use case and goals were different.
 
-==== Theory to remember / research
+=== Theory to remember / research
 
 - _CAP theorem_ - distributed system cannot be completely consistent (C), available (A),
     and tolerant of network partitions (P) all at the same time. *[TODO: add citation]*
@@ -96,15 +111,6 @@ well as synchronize some knowledge between those projects. The application (impl
 software developers and integrate well with their daily workflow which includes frequent use of git. Hyperlinks to
 content related to another repository in the system should be verified by the provided tooling.
 
-
-#pagebreak()
-
-// ------ CONTENT ------
-
-#set heading(outlined: true)
-
-= Introduction
-
-// ------ BIBLIOGRAPHY ------
-
-#bibliography("bibliography.yml")
+= New section
+#lorem(60)
+]
