@@ -3,7 +3,7 @@ use tokio::sync::Mutex;
 
 pub mod get;
 
-pub fn run(storage_path: &str) {
+pub fn run(storage_path: &str, address: Option<String>) {
     let git_repo = git2::Repository::open(&storage_path).expect(
         format!(
             "failed to open a git repository contained within wit storage at {}, use 'init' command to create one",
@@ -13,9 +13,14 @@ pub fn run(storage_path: &str) {
     );
     let storage_path = Path::new(storage_path);
     let full_path = storage_path.canonicalize().unwrap();
+    let address = address.unwrap_or("localhost:3000".to_owned());
 
-    println!("Running at {}", full_path.to_str().unwrap());
-    start_server(git_repo);
+    println!(
+        "running wiki stored at {}, hosted at {}",
+        full_path.to_str().unwrap(),
+        &address
+    );
+    run_axum_server(git_repo, address);
 }
 
 #[derive(Clone, axum::extract::FromRef)]
@@ -23,7 +28,7 @@ pub struct ServerState {
     git_repo: Arc<Mutex<git2::Repository>>,
 }
 
-pub fn start_server(git_repo: git2::Repository) {
+pub fn run_axum_server(git_repo: git2::Repository, address: String) {
     let state = ServerState {
         git_repo: Arc::new(Mutex::new(git_repo)),
     };
@@ -38,9 +43,7 @@ pub fn start_server(git_repo: git2::Repository) {
         .build()
         .unwrap()
         .block_on(async {
-            let tcp_listener = tokio::net::TcpListener::bind("localhost:3000")
-                .await
-                .unwrap();
+            let tcp_listener = tokio::net::TcpListener::bind(address).await.unwrap();
 
             axum::serve(tcp_listener, main_router).await.unwrap();
         })

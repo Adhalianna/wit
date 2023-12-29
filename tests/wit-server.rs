@@ -1,7 +1,8 @@
 use std::time::Duration;
 
 use common::{
-    init_git_repo, new_test_client_repo_path, new_test_server_path, TestServerHandle, TEST_INIT,
+    init_git_repo, new_test_client_repo_path, new_test_server_path, InitializedTestServer,
+    TEST_INIT,
 };
 
 #[test]
@@ -9,7 +10,7 @@ pub fn client_connects_to_remote_repo() {
     TEST_INIT();
 
     let server_path = new_test_server_path();
-    TestServerHandle::init(&server_path);
+    InitializedTestServer::new(&server_path);
 
     let client_path = new_test_client_repo_path();
     init_git_repo(&client_path);
@@ -28,8 +29,8 @@ pub fn server_responds_with_local_files() {
     TEST_INIT();
 
     let server_path = new_test_server_path();
-    let mut server = TestServerHandle::init(&server_path);
-    server.run();
+    let server = InitializedTestServer::new(&server_path);
+    let server = server.run();
 
     let client_path = new_test_client_repo_path();
     init_git_repo(&client_path);
@@ -44,5 +45,5 @@ pub fn server_responds_with_local_files() {
 
     std::thread::sleep(Duration::from_millis(1000));
 
-    reqwest::blocking::get("http://localhost:3000/empty.md").unwrap();
+    reqwest::blocking::get(format!("http://{}/empty.md", server.address_str())).unwrap();
 }

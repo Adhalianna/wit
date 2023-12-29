@@ -1,4 +1,4 @@
-use std::{fs, path::Path, sync::Mutex};
+use std::{fs, path::Path};
 
 static INIT: std::sync::Once = std::sync::Once::new();
 
@@ -41,17 +41,18 @@ pub fn new_test_server_path() -> String {
     test_dir() + SERVERS_DIR + "server" + &rand::random::<u8>().to_string()
 }
 
-/// Allow only single server process to exist at once (we do no means of
-/// asserting bound address uniqness at the moment).
-static SERVER_PROCESS: Mutex<Option<std::process::Child>> = Mutex::new(None);
-
-pub struct TestServerHandle<'a> {
+pub struct InitializedTestServer {
     storage_path: String,
-    process: Option<std::sync::MutexGuard<'a, Option<std::process::Child>>>,
 }
 
-impl<'a> TestServerHandle<'a> {
-    pub fn init(at: &str) -> Self {
+pub struct RunningTestServer {
+    storage_path: String,
+    address: std::net::SocketAddr,
+    process: std::process::Child,
+}
+
+impl InitializedTestServer {
+    pub fn new(at: &str) -> Self {
         // Run directly from cargo package. Since server is not exposed
         // as library, using the cli feels more appropiate.
         let mut cmd = std::process::Command::new("cargo");
@@ -69,34 +70,46 @@ impl<'a> TestServerHandle<'a> {
             .unwrap();
         Self {
             storage_path: at.to_owned(),
-            process: None,
         }
     }
-    pub fn run(&mut self) {
-        self.process = Some(SERVER_PROCESS.lock().unwrap());
-        self.process.as_mut().unwrap().replace(
-            std::process::Command::new("cargo")
-                .arg("run")
-                .arg("--quiet")
-                .args(["--package", "wit-server"])
-                .arg("--")
-                .args(["-s", &self.storage_path])
-                .spawn()
-                .unwrap(),
-        );
+    pub fn storage_path(&self) -> &str {
+        &self.storage_path
+    }
+    pub fn run(self) -> RunningTestServer {
+        let address = {
+            let listnr = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+            listnr.local_addr().unwrap()
+        };
+
+        let process = std::process::Command::new("cargo")
+            .arg("run")
+            .arg("--quiet")
+            .args(["--package", "wit-server"])
+            .arg("--")
+            .args(["-s", &self.storage_path])
+            .args(["-a", &address.to_string()])
+            .spawn()
+            .unwrap();
+
+        RunningTestServer {
+            storage_path: self.storage_path,
+            address,
+            process,
+        }
+    }
+}
+
+impl RunningTestServer {
+    pub fn address_str(&self) -> String {
+        self.address.to_string()
     }
     pub fn storage_path(&self) -> &str {
         &self.storage_path
     }
 }
 
-impl<'a> Drop for TestServerHandle<'a> {
+impl Drop for RunningTestServer {
     fn drop(&mut self) {
-        match self.process.as_mut() {
-            Some(process) => {
-                process.as_mut().unwrap().kill().unwrap();
-            }
-            None => {}
-        }
+        self.process.kill().unwrap();
     }
 }

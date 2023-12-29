@@ -21,7 +21,7 @@ struct Cli {
     #[arg(short, long, value_name = "PATH", global = true, default_value_t = {".".to_owned()} )]
     storage_path: String,
 
-    #[arg(short, long, value_name = " ")]
+    #[arg(short, long, value_name = "HTTP_ADDRESS")]
     address: Option<String>,
 }
 
@@ -57,7 +57,8 @@ pub fn main() {
     match cli.command {
         None => {
             let storage_path = cli.storage_path;
-            run(&storage_path);
+            let address = cli.address;
+            run(&storage_path, address);
         }
         Some(command) => match command {
             Command::Init {
@@ -67,11 +68,12 @@ pub fn main() {
                 git_user_email,
             } => {
                 let storage_path = cli.storage_path;
+                let address = cli.address;
 
                 init(force, &storage_path, git_user_name, git_user_email).unwrap();
 
                 if !do_not_run {
-                    run(&storage_path);
+                    run(&storage_path, address);
                 }
             }
         },
