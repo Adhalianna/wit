@@ -52,9 +52,10 @@ pub struct RunningTestServer {
 }
 
 impl InitializedTestServer {
-    pub fn new(at: &str) -> Self {
+    pub fn new() -> Self {
         // Run directly from cargo package. Since server is not exposed
         // as library, using the cli feels more appropiate.
+        let storage_path = new_test_server_path();
         let mut cmd = std::process::Command::new("cargo");
         cmd.arg("run")
             .arg("--quiet")
@@ -62,15 +63,13 @@ impl InitializedTestServer {
             .arg("--")
             // the server command params:
             .arg("init")
-            .args(["-s", at])
+            .args(["-s", &storage_path])
             .args(["-U", "TEST"])
             .args(["-E", "test@example.com"])
             .arg("-n") // short for --do-not-run
             .output()
             .unwrap();
-        Self {
-            storage_path: at.to_owned(),
-        }
+        Self { storage_path }
     }
     pub fn storage_path(&self) -> &str {
         &self.storage_path
