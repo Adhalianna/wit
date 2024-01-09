@@ -145,3 +145,75 @@ unwilingness_to_share_knowledge_study_turkey:
     chapter: 4
     page-range: 15-21
     parent: *knowledge_sharing_barriers_case_study_turkey
+
+consistency_between_architecture_and_informal_docs:
+    type: article
+    title: Towards Consistency Checking Between Software Architecture and Informal Documentation
+    serial-number:
+        doi: 10.1109/ICSA-C.2019.00052
+        isbn: 978-1-7281-1876-5
+    parent:
+        type: conference
+        title: 2019 IEEE International Conference on Software Architecture Companion (ICSA-C)
+        date: 2019-03-25
+        location: Hamburg, Germany
+    publisher: IEEE
+    page-range: 250-253
+    author:
+        - Jan Keim
+        - Anne Koziolek
+
+ebon_for_consistency:
+    type: article
+    title: Ensuring Consistency between Designs, Documentation, Formal Specifications, and Implementations
+    author:
+        - Joseph R. Kiniry
+        - Fintan Fairmichael
+    editor:
+        - Grace A. Lewis
+        - Iman Poernomo
+        - Christine Hofmeister
+    page-range: 242-261
+    publisher: Springer, Berlin, Heidelberg
+    serial-number:
+        doi: 10.1007/978-3-642-02414-6_15
+        isbn: 978-3-642-02414-6
+    date: 2009
+    parent:
+        type: conference
+        title: International Symposium on Component-Based Software Engineering.
+        date: 2009
+
+knowledge_sharing_global_software_development:
+    type: article
+    author:
+        - Mansooreh Zahedi
+        - Mojtaba Shahin
+        - Muhammad Ali Babar
+    title: A systematic review of knowledge sharing challenges and practices in global software development
+    serial-number:
+        doi: 10.1016/j.ijinfomgt.2016.06.007
+        issn: 0268-4012
+    date: 2016-12
+    page-range: 995-1019
+    parent:
+        type: periodical
+        title: International Journal of Information Management
+        volume: 36
+        issue: 6
+
+alignment_flexibility_knowledge_based_perspective:
+    type: article
+    title: "Process Documentation, Operational Alignment, and Flexibility in IT Outsourcing Relationships: A Knowledge-Based Perspective"
+    date: 2008-01-01
+    author:
+        - Sebastian F. Martin
+        - Heinz-Theo Wagner
+        - Daniel Beimborn
+
+libgit2_desc:
+    type: web
+    title: libgit2
+    url:
+        value: https://libgit2.org/
+        date: 2024-01-07

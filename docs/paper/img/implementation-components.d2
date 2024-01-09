@@ -1,0 +1,101 @@
+classes: {
+    icon: {
+        icon.near: top-center
+        label.near: outside-top-left
+    }
+    libgit2: {
+        style.stroke: orangered
+        style.fill: papayawhip
+        icon: https://icons.terrastruct.com/dev%2Fgit.svg
+    }
+    rust: {
+        style.stroke: black
+        style.fill: whitesmoke
+        icon: https://icons.terrastruct.com/dev%2Frust.svg
+    }
+    git2: {
+        style.stroke: black
+        style.fill: whitesmoke
+        icon: https://icons.terrastruct.com/dev%2Frust.svg
+    }
+    git-odb: {
+        style.stroke: orangered
+        style.fill: peachpuff
+        icon: https://icons.terrastruct.com/essentials%2F117-database.svg
+    }
+    files: {
+        style.stroke: darkkhaki
+        style.fill: beige
+        icon: https://icons.terrastruct.com/essentials%2F257-file.svg
+    }
+}
+
+Server: {
+    grid-rows: 3
+    icon: https://icons.terrastruct.com/tech%2F022-server.svg
+    icon.near: outside-top-center
+
+    browser: Browser UI {
+        class: icon
+
+        firefox: {
+            shape: image
+            width: 100
+            icon: https://icons.terrastruct.com/dev%2Ffirefox.svg
+        }
+
+        chrome: {
+            shape: image
+            width: 100
+            icon: https://icons.terrastruct.com/dev%2Fchrome.svg
+        }
+
+        edge: {
+            shape: image
+            width: 100
+            icon: https://icons.terrastruct.com/dev%2Fie.svg
+        }
+    }
+
+    http: HTTP server {
+        class: icon
+
+        axum: {
+            class: [rust; icon]
+        }
+    }
+
+    storage: Storage {
+        class: icon
+
+        configuration: Configuration Files {
+            class: [files; icon]
+        }
+        git2: {
+            class: [git2; icon]
+            libgit2: {
+                class: [libgit2; icon]
+                git-odb: git ODB {
+                    class: [git-odb; icon]
+                }
+            }
+        }
+    }
+}
+
+Client: {
+    grid-rows: 2
+    icon: https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/cmd-terminal-icon.svg
+    icon.near: outside-top-center
+    
+    clap: {
+        class: [rust; icon]
+    }
+
+    git2: {
+        class: [git2; icon]
+        libgit2: {
+            class: [libgit2; icon]
+        }
+    }
+}

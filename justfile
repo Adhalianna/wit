@@ -1,16 +1,21 @@
 render-design-svg:
     cd docs/design && \
-    d2 --layout dagre --pad 5 architecture-concept1.d2 architecture-concept1.svg && \
-    d2 --layout dagre --pad 5 architecture-concept2.d2 architecture-concept2.svg && \
-    d2 --layout dagre --pad 5 communication-protocol1.d2 communication-protocol1.svg
+    d2 --layout dagre --pad 5 architecture-concept1.d2 && \
+    d2 --layout dagre --pad 5 architecture-concept2.d2 && \
+    d2 --layout dagre --pad 5 communication-protocol1.d2
 
 render-design: render-design-svg
    cd docs/design && \
     typst compile design.typ
 
 render-paper:
+    cd docs/paper/img && \
+        d2 --pad 0 -t 1 --center user-interaction-outline.d2 && \
+        d2 --pad 0 -t 1 --center implementation-components.d2 && \
+        d2 --pad 0 -t 1 --center client-server-communication.d2
     cd docs/paper && \
-    typst compile paper.typ
+        typst compile paper.typ && \
+        echo $?
 
 render-seminar-resources:
     cd docs/seminar && \

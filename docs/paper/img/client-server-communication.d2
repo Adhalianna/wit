@@ -1,0 +1,173 @@
+
+vars {
+    ...@user-interaction-outline.vars
+}
+
+classes: {
+    git: {
+        style.stroke: ${git-tr-color}
+    }
+    user-interaction: {
+        style.stroke: ${ui-color}
+    }
+    http: {
+        style.stroke: ${http-color}
+    }
+    command: {
+        style.bold: true
+        style.fill: white
+        style.text-transform: lowercase
+        style.font: mono
+        style.bold: true
+    }
+    action: {
+        style.bold: false
+        style.italic: true
+    }
+    box: {
+        style.fill: transparent
+        style.stroke: transparent
+        label: ""
+    }
+    legend-dot: {
+        style.stroke: transparent
+        label: ""
+        shape: rectangle
+        width: 20
+        height: 30
+    }
+    note: {
+        style.fill: transparent
+        style.stroke: transparent
+        style.text-transform: none
+        style.font-size: 24
+    }
+    agent-with-icon: {
+        icon.near: outside-top-center
+    }
+}
+
+direction: left
+
+sequence-box {
+    class: box
+    shape: sequence_diagram
+    
+    user: User {
+        icon: https://icons.terrastruct.com/essentials%2F365-user.svg
+        class: agent-with-icon
+    }
+    cli: CLI Client {
+        class: agent-with-icon
+        icon: https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/cmd-terminal-icon.svg
+    }
+    repo: Git Repository {
+        icon: https://icons.terrastruct.com/dev%2Fgit.svg
+        class: agent-with-icon
+    }
+    server: Wit Server {
+        icon: https://icons.terrastruct.com/tech%2F022-server.svg
+        class: agent-with-icon
+    }
+    server2: Another Wit Server {
+        icon: https://icons.terrastruct.com/tech%2F022-server.svg
+        class: agent-with-icon
+    }
+    browser: Web Browser {
+        icon: https://icons.terrastruct.com/dev%2Ffirefox.svg
+        class: agent-with-icon
+    }
+    
+    commands: Commands execution {
+        user -> cli: > wit add {
+            class: [command; user-interaction]
+        }
+        
+        cli -> repo: modifes submodule index {
+            class: [git]
+        }
+        
+        user -> cli: > wit commit {
+            class: [command; user-interaction]
+        }
+        
+        cli -> repo: writes commit {
+            class: [git]
+        }
+        
+        user -> cli: > wit push {
+            class: [command; user-interaction]
+        }
+    }
+    
+    verification: Link verification {
+        cli -> repo: triggers hook {
+            class: [git]
+        }
+        
+        repo -> cli: "> wit verify" {
+            class: [command]
+        }
+        
+        
+        cli.links: |txt
+            List of links
+            requiring verification
+            with current version
+        |
+        
+        cli -> server: verifies with {
+            class: [http]
+        }
+    }
+    
+    
+    federation: Communication between federated servers {    
+        server -> server2: verifies in federation {
+            class: [http]
+        }
+    
+        server2 -> server: verification success {
+            class: [http]
+        }
+    }
+    
+    pushing: Saving changes on the remote {
+        server -> repo: verification success {
+            class: [http]
+        }
+        
+        repo -> server: pushes to {
+            class: [git]
+        }
+    }
+    
+    
+    browsing: Web Browsing {
+        user -> browser: queries wiki page {
+            class: [user-interaction]
+        }
+        
+        browser.url: |txt
+            HTTP URL of 
+            selected page
+        |
+        
+        browser -> server: reads from {
+            class: [http]
+        }
+        
+        server.page: |txt
+            Rendered HTML
+            wiki page
+        |
+        
+        server -> browser: returns pages {
+            class: [http]
+        }
+        
+        browser -> user: displays wiki page {
+            class: [user-interaction]
+        }
+    }
+}
