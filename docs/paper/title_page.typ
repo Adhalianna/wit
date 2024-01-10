@@ -59,7 +59,7 @@
                     columns: (140pt, auto),
                     gutter: 0.9em,
                     "Author:", author,
-                    "Degree Programmer:", degree_programme,
+                    "Degree Programme:", degree_programme,
                     "Supervisor:", supervisor,
                 )
             ]

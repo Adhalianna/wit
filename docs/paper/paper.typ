@@ -5,7 +5,13 @@
 #let pl_paper_title = "Rozproszona Wiki oparta o Git do wymiany informacji między projektami skupiająca się na programistach jako użytkownikach"
 
 // ------ GLOBAL STYLE ------
-#set text(size: 12pt, fallback: true, font: (
+#set text(size: 12pt, 
+  fallback: true,
+  lang: "en",
+  region: "GB",
+  font: (
+  "Times New Roman",
+  "Liberation Serif",
   "Linux Libertine",
   "IBM Plex Serif",
   "Source Sans Pro",
@@ -14,7 +20,6 @@
   "FiraCode Nerd Font",
   "serif",
   "sans-serif",
-  "IBM Plex Sans",
   "sans",
   "monospace",
 ))
@@ -24,6 +29,9 @@
 ]
 #let Wit() = [
 ```Wit```
+]
+#let git2() = [
+  ```git2```
 ]
 
 // ------ CONTENT ------
@@ -43,9 +51,9 @@
   ],
   abstracts: [
     = Summary
-    #lorem(30)
+    *[TODO]* #lorem(30)
     = Streszczenie
-    #lorem(30)
+    *[TODO]* #lorem(30)
   ],
   bibliography_file: "bibliography.yml",
 )[
@@ -100,6 +108,8 @@
 
   = Software Architecture
 
+  *[TODO]* #lorem(15)
+  
   == Technology Stack
 
   As a prototype software #wit relies heavily on external libraries and
@@ -112,12 +122,14 @@
   crates - cargo's dependency units. @fig_tech_stack present's a stack-like
   representation of technologies utilised by the server and client executables.
 
-  The source code does not reference libgit2 - 
-  "pure C implementation of the Git core methods"
-  
-  #figure(image("img/implementation-components.svg"), caption: [
+  #figure(image("img/implementation-components.svg", height: 70%),
+    caption: [
     The technology stack of implemented solution.
   ]) <fig_tech_stack>
+
+  The source code does not reference libgit2 - 
+  "pure C implementation of the Git core methods" - directly but instead it relies
+  on a wrapper crate named git2.
 
   == Communication Protocols
 
@@ -150,9 +162,13 @@
 
   = Unique challenges
   
+  #lorem(10)
+  
   = Scratchpad
-
-  === Inter-project knowledge sharing over different organization structures
+  
+  The part that should be eventually removed.
+  
+  == Inter-project knowledge sharing over different organization structures
 
   - Within a single team working on multiple projects.
   - Between multiple teams working on their projects in a single organization
@@ -164,7 +180,7 @@
   - Between multiple organizations which work on their projects separately but which
     share some knowledge between projects.
 
-  === Loose thoughts
+  == Loose thoughts
 
   To self: The interdependence and cooperative vs competetive context are
   discussed in @modeling_high_quality_knowledge_sharing
@@ -174,7 +190,7 @@
   interdependence" *[TODO: add citation]* which may result from belonging to
   different projects or organizations.
 
-  === Knowledge sharing barriers related to knowledge ownership and access to knowledge
+  == Knowledge sharing barriers related to knowledge ownership and access to knowledge
 
   - Unwilingess to give up power associated with knowledge
     @unwilingness_to_share_knowledge_study_turkey
@@ -187,11 +203,11 @@
   - Security risks associated with certain information
     @unwilingness_to_share_knowledge_study_turkey
 
-  === Relevant recomendations and solutions to knowledge sharing barriers
+  == Relevant recomendations and solutions to knowledge sharing barriers
 
   - Assuring no disadvantage after sharing the knowledge
 
-  === Implementation
+  == Implementation
 
   Possibly relevant:
   - similar attempt on general files stored in a dedicated database
@@ -208,7 +224,7 @@
     distributed ledger @decentralized_git_version_control but their use case and
     goals were different.
 
-  === Theory to remember / research
+  == Theory to remember / research
 
   - _CAP theorem_ - distributed system cannot be completely consistent (C),
     available (A), and tolerant of network partitions (P) all at the same time.
@@ -226,4 +242,17 @@
   well with their daily workflow which includes frequent use of git. Hyperlinks to
   content related to another repository in the system should be verified by the
   provided tooling.
+  
+  == Test template
+  #lorem(30)
+  === Lorem
+  #lorem(30)
+  ==== Lorem
+  #lorem(40)
+  ==== Lorem2
+  #lorem(200)
+  ===== Lorem
+  #lorem(100)
+  ===== Lorem2
+  #lorem(100)
 ]
