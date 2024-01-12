@@ -1,23 +1,39 @@
-default: render-paper
+# print available commands
+default:
+    @just --list
+
+d2-regular-font := `fc-match "Times New Roman" -f "%{file}"`
+d2-italic-font := `fc-match "Times New Roman:italic" -f "%{file}"`
+d2-bold-font := `fc-match "Times New Roman:bold" -f "%{file}"`
+
+export D2_PAD := "0"
+export D2_CENTER := "true"
+#export D2_FONT_REGULAR := d2-regular-font
+#export D2_FONT_ITALIC := d2-italic-font
+#export D2_FONT_BOLD := d2-bold-font
+export D2_THEME := "1"
+export D2_FORCE_APPENDIX := "true"
 
 # render .d2 files in under docs/design to .svg graphics
-render-design-svg:
+_render-design-svg:
     cd docs/design && \
     d2 --layout dagre --pad 5 architecture-concept1.d2 && \
     d2 --layout dagre --pad 5 architecture-concept2.d2 && \
     d2 --layout dagre --pad 5 communication-protocol1.d2
 
 # render the document present under docs/design
-render-design: render-design-svg
+render-design: _render-design-svg
    cd docs/design && \
     typst compile design.typ
 
 # render the thesis document
 render-paper:
     cd docs/paper/img && \
-        d2 --pad 0 -t 1 --center user-interaction-outline.d2 && \
-        d2 --pad 0 -t 1 --center implementation-components.d2 && \
-        d2 --pad 0 -t 1 --center client-server-communication.d2
+        d2 user-interaction-outline.d2 && \
+        d2 implementation-components.d2 && \
+        d2 client-server-communication.d2 && \
+        d2 architecture-concept-non-federated.d2 && \
+        d2 architecture-concept-federated.d2
     cd docs/paper && \
         typst compile paper.typ && \
         echo $?

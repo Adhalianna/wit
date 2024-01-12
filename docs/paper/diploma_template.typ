@@ -105,9 +105,15 @@
               // If the next heading after the header is on the same nesting level
               // as the next heading before the header, then the header should display
               // the first heading that is less nested found before the header.
-              let headings_on_level_higher = query(heading.where(level: previous_heading.level - 1).before(header_loc), header_loc)
+              let headings_on_level_higher = query(
+                heading.where(level: previous_heading.level - 1).before(header_loc),
+                header_loc,
+              )
               if headings_on_level_higher.len() > 0 {
-                query(heading.where(level: previous_heading.level - 1).before(header_loc), header_loc).last()
+                query(
+                  heading.where(level: previous_heading.level - 1).before(header_loc),
+                  header_loc,
+                ).last()
               } else {
                 previous_heading
               }
@@ -177,8 +183,7 @@
   pagebreak()
   pagebreak()
 
-  
-  // ACKNOWLEDGEMENTS
+   // ACKNOWLEDGEMENTS
   if acknowledgement != none {
     align(right + bottom)[
       #grid(columns: (75%), [

@@ -28,6 +28,10 @@ classes: {
         style.fill: beige
         icon: https://icons.terrastruct.com/essentials%2F257-file.svg
     }
+    tier: {
+        style.italic: true
+        style.bold: false
+    }
 }
 
 Server: {
@@ -35,8 +39,8 @@ Server: {
     icon: https://icons.terrastruct.com/tech%2F022-server.svg
     icon.near: outside-top-center
 
-    browser: Browser UI {
-        class: icon
+    browser: Presentation {
+        class: [icon; tier]
 
         firefox: {
             shape: image
@@ -57,16 +61,21 @@ Server: {
         }
     }
 
-    http: HTTP server {
-        class: icon
+    logic: Business Logic {
+        class: [icon; tier]
+
+        clap: {
+            class: [rust; icon]
+        }
 
         axum: {
             class: [rust; icon]
         }
+
     }
 
-    storage: Storage {
-        class: icon
+    storage: Data {
+        class: [icon; tier]
 
         configuration: Configuration Files {
             class: [files; icon]
@@ -87,7 +96,7 @@ Client: {
     grid-rows: 2
     icon: https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/cmd-terminal-icon.svg
     icon.near: outside-top-center
-    
+
     clap: {
         class: [rust; icon]
     }

@@ -1,14 +1,15 @@
 
 vars {
-    ...@user-interaction-outline.vars
+    ...@shared.vars
 }
 
 classes: {
+    ...@shared.classes
     git: {
-        style.stroke: ${git-tr-color}
+        style.stroke: ${git-transport-color}
     }
     user-interaction: {
-        style.stroke: ${ui-color}
+        style.stroke: ${user-interaction-color}
     }
     http: {
         style.stroke: ${http-color}
@@ -23,24 +24,6 @@ classes: {
     action: {
         style.bold: false
         style.italic: true
-    }
-    box: {
-        style.fill: transparent
-        style.stroke: transparent
-        label: ""
-    }
-    legend-dot: {
-        style.stroke: transparent
-        label: ""
-        shape: rectangle
-        width: 20
-        height: 30
-    }
-    note: {
-        style.fill: transparent
-        style.stroke: transparent
-        style.text-transform: none
-        style.font-size: 24
     }
     agent-with-icon: {
         icon.near: outside-top-center

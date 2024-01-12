@@ -1,71 +1,38 @@
 vars {
-    http-color: mediumpurple
-    ui-color: royalblue
-    git-tr-color: orangered
+    ...@shared.vars
     d2-config {
         layout-engine: elk
     }
 }
 
 classes: {
-    env: {
-        style.stroke-dash: 1
-        label.near: outside-top-center
-        style.border-radius: 100
-        style.fill: transparent
-        style.double-border: false
-        style.bold: false
-        style.italic: true
-    }
+    ...@shared.classes
     repository: {
         label.near: outside-top-center
         icon: https://icons.terrastruct.com/dev%2Fgit.svg
-        #style.stroke: orangered
     }
     remote: {
         icon: https://icons.terrastruct.com/tech%2F022-server.svg
         label.near: outside-top-center
-        #style.double-border: true
     }
     http: {
         style.stroke: ${http-color}
         style.font-color: ${http-color}
         style.border-radius: 60
-        #style.font-size: 30
         style.text-transform: none
     }
     ui: {
         style.stroke-dash: 1
         style.border-radius: 60
-        #style.font-size: 30
         style.text-transform: none
-        style.stroke: ${ui-color}
-        style.font-color: ${ui-color}
+        style.stroke: ${user-interaction-color}
+        style.font-color: ${user-interaction-color}
     }
     git-transport: {
-        style.stroke: ${git-tr-color}
-        style.font-color: ${git-tr-color}
+        style.stroke: ${git-transport-color}
+        style.font-color: ${git-transport-color}
         style.border-radius: 60
-        #style.font-size: 30
         style.text-transform: none
-    }
-    legend-dot: {
-        style.stroke: transparent
-        label: ""
-        shape: rectangle
-        width: 20
-        height: 30
-    }
-    box: {
-        style.fill: transparent
-        style.stroke: transparent
-        label: ""
-    }
-    note: {
-        style.fill: transparent
-        style.stroke: transparent
-        style.text-transform: none
-        style.font-size: 24
     }
 }
 
@@ -78,7 +45,7 @@ user-env: User Environment {
         width: 100
         height: 120
         shape: person
-        style.fill: ${ui-color}
+        style.fill: ${user-interaction-color}
     }
     
     user -> browser: views wiki through {
@@ -155,22 +122,12 @@ remotes: Remote Servers {
 }
 
 legend: {
-    style.fill: transparent
-    #style.stroke: transparent
-    style.underline: true
-    style.text-transform: none
-    style.fill-pattern: null
-    label: Legend
-    grid-columns: 1
-    grid-gap: 10
-    style.double-border: false
+    class: legend
     
     ui {
-        class: box
-        grid-rows: 1
-        grid-gap: 0
+        class: legend-line
         git-circle {
-            style.fill: ${ui-color}
+            style.fill: ${user-interaction-color}
             class: legend-dot
         }
         note:|txt user interaction| {
@@ -179,9 +136,7 @@ legend: {
     }
     
     http {
-        class: box
-        grid-rows: 1
-        grid-gap: 0
+        class: legend-line
         http-circle {
             style.fill: ${http-color}
             class: legend-dot
@@ -194,16 +149,15 @@ legend: {
     }
     
     git {
-        class: box
-        grid-rows: 1
-        grid-gap: 0
+        class: legend-line
         git-circle {
-            style.fill: ${git-tr-color}
+            style.fill: ${git-transport-color}
             class: legend-dot
         }
-        note:|txt
+        note:|md
         libgit2 transport
-        (HTTPS or SSH)| {
+        (HTTPS or SSH)
+        | {
             class: note
         }
     }
