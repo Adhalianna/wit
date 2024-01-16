@@ -7,13 +7,13 @@ publish = false
 
 [dev-dependencies]
 wit-cli = { path = "../src/wit-cli" }
-wit-client = { path = "../src/wit-client" }
 wit-server = { path = "../src/wit-server" }
 reqwest = { workspace = true, features = ["blocking"] }
 
 [dependencies]
 git2 = { workspace = true }
 rand = { version = "0.8.5" }
+wit-client = { path = "../src/wit-client" }
 
 [lib]
 name = "common"

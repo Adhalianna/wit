@@ -14,6 +14,6 @@ pub struct Remotes(Vec<Remote>);
 #[derive(serde::Deserialize, serde::Serialize)]
 pub struct Remote {
     local_name: String,
-    url: url::Url,
+    url: String,
     key: Option<String>,
 }

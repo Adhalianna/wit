@@ -1,27 +1,16 @@
 use std::time::Duration;
 
-use common::{init_git_repo, new_test_client_repo_path, InitializedTestServer, TEST_INIT};
+use common::{
+    init_git_repo, new_test_client_repo_path, ClientRepositoryWithWiki, InitializedTestServer,
+    TEST_INIT,
+};
 
 #[test]
 pub fn client_connects_to_remote_repo() {
     TEST_INIT();
-
     let server = InitializedTestServer::new();
-
-    let client_path = new_test_client_repo_path();
-    init_git_repo(&client_path);
-    wit_client::init_submodule(
-        &client_path,
-        None,
-        &("file://".to_string() + server.storage_path()),
-    );
-
-    std::fs::File::create(client_path.clone() + "/" + wit_client::DEFAULT_WIT_DIR + "/empty.md")
-        .unwrap();
-
-    wit_client::add_files(&client_path, &["empty.md"]);
-    wit_client::commit(&client_path, "test commit");
-    wit_client::push(&client_path);
+    let mut client = ClientRepositoryWithWiki::new(server.storage_path_url());
+    client.commit_push_txt_file("empty.md", None, "test commit");
 }
 
 #[test]
@@ -30,22 +19,65 @@ pub fn server_responds_with_local_files() {
 
     let server = InitializedTestServer::new().run();
 
+    std::thread::sleep(Duration::from_millis(1000));
+
+    let mut client = ClientRepositoryWithWiki::new(server.git_url());
+    client.commit_push_txt_file("empty.md", None, "test commit");
     let client_path = new_test_client_repo_path();
-    init_git_repo(&client_path);
-    wit_client::init_submodule(
-        &client_path,
-        None,
-        &("file://".to_string() + server.storage_path()),
-    );
-
-    std::fs::File::create(client_path.clone() + "/" + wit_client::DEFAULT_WIT_DIR + "/empty.md")
-        .unwrap();
-
-    wit_client::add_files(&client_path, &["empty.md"]);
-    wit_client::commit(&client_path, "test commit");
-    wit_client::push(&client_path);
 
     std::thread::sleep(Duration::from_millis(1000));
 
     reqwest::blocking::get(format!("http://{}/empty.md", server.address_str())).unwrap();
+}
+
+#[test]
+pub fn server_renders_markdown_files() {
+    TEST_INIT();
+
+    let server = InitializedTestServer::new().run();
+
+    std::thread::sleep(Duration::from_millis(1000));
+
+    let mut client = ClientRepositoryWithWiki::new(server.git_url());
+    client.commit_push_txt_file(
+        "welcome.md",
+        Some("# Welcome!\ncheckout [this link](www.google.com)!"),
+        "test commit",
+    );
+
+    std::thread::sleep(Duration::from_millis(1000));
+
+    let response =
+        reqwest::blocking::get(format!("http://{}/welcome.md", server.address_str())).unwrap();
+    assert_eq!(response.headers().get("content-type").unwrap(), "text/html");
+    assert_eq!(
+        response.text().unwrap(),
+        "<h1 id=\"welcome-\">Welcome!</h1>\n<p>checkout <a href=\"www.google.com\">this link</a>!</p>\n"
+    )
+}
+
+#[test]
+pub fn server_renders_markdown_files_and_translates_wit_links() {
+    TEST_INIT();
+
+    let server = InitializedTestServer::new().run();
+
+    std::thread::sleep(Duration::from_millis(1000));
+
+    let mut client = ClientRepositoryWithWiki::new(server.git_url());
+    client.commit_push_txt_file(
+        "welcome.md",
+        Some("# Welcome!\ncheckout [this link](wit:test.txt)!"),
+        "test commit",
+    );
+
+    std::thread::sleep(Duration::from_millis(1000));
+
+    let response =
+        reqwest::blocking::get(format!("http://{}/welcome.md", server.address_str())).unwrap();
+    assert_eq!(response.headers().get("content-type").unwrap(), "text/html");
+    assert_eq!(
+        response.text().unwrap(),
+        format!("<h1 id=\"welcome-\">Welcome!</h1>\n<p>checkout <a href=\"{}/test.txt\">this link</a>!</p>\n", server.http_url())
+    )
 }

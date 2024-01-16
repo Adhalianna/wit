@@ -91,13 +91,14 @@ pub fn init(
         storage_path,
         git2::RepositoryInitOptions::new()
             .bare(true)
+            .mode(git2::RepositoryInitMode::SHARED_UMASK)
             .description("wit wiki repository")
             .initial_head("main"),
     )
     .map_err(|e| InitError::GitInit(e))?;
 
     git_repo
-        .add_ignore_rule(METADATA_FILENAME)
+        .add_ignore_rule(&format!("{METADATA_FILENAME}\ngit-daemon-export-ok\n"))
         .map_err(|e| InitError::IgnoreRuleUpdate(e))?;
 
     let (commiter_name, commiter_email) = {
@@ -132,10 +133,31 @@ pub fn init(
     let mut repo_conifg = git_repo.config().unwrap();
     repo_conifg.set_str("user.name", &commiter_name).unwrap();
     repo_conifg.set_str("user.email", &commiter_email).unwrap();
+    repo_conifg.set_bool("core.bare", true).unwrap();
+    repo_conifg.set_i64("http.postBuffer", 52428800).unwrap();
+    repo_conifg.set_bool("http.getanyfile", true).unwrap();
+    repo_conifg.set_bool("http.uploadpack", true).unwrap();
+    repo_conifg.set_bool("http.receivepack", true).unwrap(); //TODO: reconsider when auth required
+
+    let mut update_server_hook_file =
+        std::fs::File::create(storage_path.to_owned() + "/hooks/post-receive").unwrap();
+    update_server_hook_file
+        .write("#!/bin/sh\nexec git update-server-info\n".as_bytes())
+        .unwrap();
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        let mut permissions = update_server_hook_file.metadata().unwrap().permissions();
+        permissions.set_mode(0o755);
+        update_server_hook_file
+            .set_permissions(permissions)
+            .unwrap();
+    }
 
     let mut git_index = git_repo.index().unwrap();
 
     create_metadata_file(storage_path)?;
+    std::fs::File::create(storage_path.to_owned() + "/git-daemon-export-ok").unwrap(); // magic file for git http transport impl
 
     let commit_tree_oid = git_index
         .write_tree()
@@ -160,6 +182,11 @@ pub fn init(
             &[],
         )
         .map_err(|e| InitError::CommitFailure(e))?;
+
+    std::process::Command::new("git")
+        .arg("udpate-server-info")
+        .output()
+        .unwrap();
 
     println!("Finished intialization!");
 

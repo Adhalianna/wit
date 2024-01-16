@@ -48,4 +48,4 @@ render-seminar-resources:
 
 # run tests with cargo
 test:
-    RUST_BACKTRACE=1 cargo test -- --nocapture
+    cargo test --workspace -- --nocapture

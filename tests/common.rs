@@ -41,6 +41,39 @@ pub fn new_test_server_path() -> String {
     test_dir() + SERVERS_DIR + "server" + &rand::random::<u8>().to_string()
 }
 
+pub struct ClientRepositoryWithWiki {
+    path: String,
+    remote_wiki_url: String,
+}
+
+impl ClientRepositoryWithWiki {
+    pub fn new(remote_wiki_url: String) -> Self {
+        let path = new_test_client_repo_path();
+        init_git_repo(&path);
+        wit_client::init_submodule(&path, None, &remote_wiki_url);
+
+        Self {
+            path,
+            remote_wiki_url,
+        }
+    }
+    /// Commits and pushes a file
+    pub fn commit_push_txt_file(&mut self, name: &str, content: Option<&str>, msg: &str) {
+        let mut file = std::fs::File::create(
+            self.path.clone() + "/" + wit_client::DEFAULT_WIT_DIR + "/" + name,
+        )
+        .unwrap();
+        if let Some(content) = content {
+            use std::io::Write;
+            file.write_all(content.as_bytes()).unwrap();
+        };
+
+        wit_client::add_files(&self.path, &[name]);
+        wit_client::commit(&self.path, msg);
+        wit_client::push(&self.path);
+    }
+}
+
 pub struct InitializedTestServer {
     storage_path: String,
 }
@@ -74,6 +107,9 @@ impl InitializedTestServer {
     pub fn storage_path(&self) -> &str {
         &self.storage_path
     }
+    pub fn storage_path_url(&self) -> String {
+        format!("file://{}", self.storage_path)
+    }
     pub fn run(self) -> RunningTestServer {
         let address = {
             let listnr = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
@@ -99,6 +135,12 @@ impl InitializedTestServer {
 }
 
 impl RunningTestServer {
+    pub fn git_url(&self) -> String {
+        format!("http://{}/git/", self.address_str())
+    }
+    pub fn http_url(&self) -> String {
+        format!("http://{}", self.address_str())
+    }
     pub fn address_str(&self) -> String {
         self.address.to_string()
     }
