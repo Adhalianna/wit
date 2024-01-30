@@ -8,6 +8,7 @@ use init::init;
 pub mod server;
 use server::run;
 
+pub mod file_data;
 pub mod local;
 pub mod remote;
 

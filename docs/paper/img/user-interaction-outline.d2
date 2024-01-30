@@ -1,164 +1,193 @@
-vars {
-    ...@shared.vars
-    d2-config {
-        layout-engine: elk
-    }
+vars: {
+  ...@shared.vars
+  connection-font-size: 18
+  d2-config: {
+    center: true
+    layout-engine: dagre
+  }
 }
 
 classes: {
-    ...@shared.classes
-    repository: {
-        label.near: outside-top-center
-        icon: https://icons.terrastruct.com/dev%2Fgit.svg
-    }
-    remote: {
-        icon: https://icons.terrastruct.com/tech%2F022-server.svg
-        label.near: outside-top-center
-    }
-    http: {
-        style.stroke: ${http-color}
-        style.font-color: ${http-color}
-        style.border-radius: 60
-        style.text-transform: none
-    }
-    ui: {
-        style.stroke-dash: 1
-        style.border-radius: 60
-        style.text-transform: none
-        style.stroke: ${user-interaction-color}
-        style.font-color: ${user-interaction-color}
-    }
-    git-transport: {
-        style.stroke: ${git-transport-color}
-        style.font-color: ${git-transport-color}
-        style.border-radius: 60
-        style.text-transform: none
-    }
+  ...@shared.classes
+  repository: {
+    label.near: outside-top-center
+    icon: https://icons.terrastruct.com/dev%2Fgit.svg
+  }
+  http: {
+    style.stroke: ${http-color}
+    style.font-color: ${http-color}
+    style.text-transform: none
+    style.font-size: ${connection-font-size}
+  }
+  ui: {
+    style.stroke-dash: 1
+    style.text-transform: none
+    style.stroke: ${user-interaction-color}
+    style.font-color: ${user-interaction-color}
+    style.font-size: ${connection-font-size}
+  }
+  git-transport: {
+    style.stroke: ${git-transport-color}
+    style.font-color: ${git-transport-color}
+    style.text-transform: none
+    style.font-size: ${connection-font-size}
+  }
+  p2p: {
+    style.stroke: ${p2p-color}
+    style.font-color: ${p2p-color}
+    style.text-transform: none
+    style.font-size: ${connection-font-size}
+  }
 }
 
-direction: down
+direction: right
 
-user-env: User Environment {
+box: {
+  class: box
+  grid-columns: 1
+  vertical-gap: 20
+  horizontal-gap: 0
+
+  user-env: User Environment {
     class: env
-    
+
     user: User {
-        width: 100
-        height: 120
-        shape: person
-        style.fill: ${user-interaction-color}
+      width: 100
+      height: 120
+      shape: person
+      style.fill: ${user-interaction-color}
     }
-    
+
     user -> browser: views wiki through {
-        class: ui
+      class: ui
     }
     user -> dev-env.cli: makes changes through {
-        class: ui
+      class: ui
     }
-    browser -> _.remotes.remote1 {
-        class: http
+    browser -> _.remotes.remote1: through HTTP URL {
+      class: http
     }
 
     dev-env: Development Environment {
-        class: env
+      class: env
 
-        repository: Git Repository {
+      repository
+  
+      cli: CLI Client {
+        icon: https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/cmd-terminal-icon.svg
+      }
+
+      repository: Git Repository {
+        grid-columns: 1
+        grid-gap: 0
+        label.near: outside-top-center
+        box: {
+          class: box
+          grid-columns: 1
+          horizontal-gap: 20
+          vertical-gap: 20
+          
+          submodule: Wit Submodule {
             class: repository
-            icon.near: top-center
+            width: 100
+          }
 
-            submodule: Wit Submodule {
-                class: repository
-            }
-            
-            hooks: Git Hooks {
-                class: repository
-            }
+          hooks: Git Hooks {
+            class: repository
+            width: 100
+          }
         }
+      }
 
-        cli: CLI Client{
-            icon: https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/cmd-terminal-icon.svg
-        }
-
-        cli -> _._.remotes.remote1.storage.repo: transports changes {
-            class: git-transport
-        }
-        repository.hooks --> _._.remotes.remote1 {
-            class: http
-        }
-
-        repository <- cli: writes changes {
-            class: git-transport
-        }
+      repository.box.submodule <- cli: writes changes to {
+        class: git-transport
+      }
+      repository.box.hooks -> _._.remotes.remote1: invokes link verification API {
+        class: http
+      }
+      _._.remotes.remote1.storage.repo <- cli: transports changes to {
+        class: git-transport
+      }
     }
-    
+
     browser: Web Browser {
-        icon: https://icons.terrastruct.com/dev%2Ffirefox.svg
+      icon: https://icons.terrastruct.com/dev%2Ffirefox.svg
     }
-}
+  }
 
-remotes: Remote Servers {
+  remotes: Remote Servers {
     class: env
-
+    grid-rows: 1
+    
     remote1: Server {
-        class: remote
-        icon.near: top-center
-
-        storage: Storage {
-            files: Files {
-                shape: image
-                height: 60
-                icon: https://icons.terrastruct.com/essentials%2F257-file.svg
-            }
-            repo: Bare Repository {
-                class: repository
-            }
+      storage: Storage {
+        repo: Bare Repository {
+          class: repository
         }
+      }
     }
-    remote2: Server {
-        class: remote
+    box: {
+      class: box
+      width: 200
     }
-    remote3: Server {
-        class: remote
+    remote2: Other Servers {
+      class: server
+      width: 120
+      label.near: outside-top-center
+      style.multiple: true
     }
+    remote1 <-> remote2: pulls missing pages {
+      class: p2p
+    }
+  }
 }
 
-legend: {
+  legend: {
     class: legend
-    
-    ui {
-        class: legend-line
-        git-circle {
-            style.fill: ${user-interaction-color}
-            class: legend-dot
-        }
-        note:|txt user interaction| {
-            class: note
-        }
+    near: bottom-center
+    grid-columns: 4
+
+    ui: {
+      class: legend-line
+      git-circle: {
+        style.fill: ${user-interaction-color}
+        class: legend-dot
+      }
+      note: user interaction {
+        class: note
+      }
+    }
+
+    git: {
+      class: legend-line
+      git-circle: {
+        style.fill: ${git-transport-color}
+        class: legend-dot
+      }
+      note: libgit2 transport {
+        class: note
+      }
     }
     
-    http {
-        class: legend-line
-        http-circle {
-            style.fill: ${http-color}
-            class: legend-dot
-        }
-        note: |txt
-        communication
-        over HTTP(S)|{
-            class: note
-        }
+    http: {
+      class: legend-line
+      http-circle: {
+        style.fill: ${http-color}
+        class: legend-dot
+      }
+      note: communication over HTTP APIs {
+        class: note
+      }
     }
-    
-    git {
-        class: legend-line
-        git-circle {
-            style.fill: ${git-transport-color}
-            class: legend-dot
-        }
-        note:|md
-        libgit2 transport
-        (HTTPS or SSH)
-        | {
-            class: note
-        }
+
+    p2p: {
+      class: legend-line
+      p2p-circle: {
+        class: legend-dot
+        style.fill: ${p2p-color}
+      }
+      note: communication through libp2p {
+        class: note
+      }
     }
-}
+  }

@@ -23,10 +23,10 @@
 
   let author_short_name = author_first_name_initial + " " + if author_second_name_initial != none { author_second_name_initial + " " } + author.surname
 
-  let footer_font_size = 11pt
+  let footer_font_size = 0.8em
   let minimal_footer = locate(loc => {
     let current_page = counter(page).at(loc).first()
-    align(center)[#text(size: footer_font_size)[#current_page]]
+    align(center)[#text(size: 1em)[#current_page]]
   })
 
   // TITLE PAGE
@@ -61,12 +61,22 @@
     text(size: 1.1em)[#hding]
     v(0.33em)
   }
-  // Stylize paragraphs
+  show heading: set par(justify: false, leading: 1em)
+  show heading: set block(spacing: 1em)
+  show heading.where(level: 1): set block(spacing: 2em)
+    // Stylize paragraphs
   set par(justify: true, leading: 1.25em)
+  show par: set block(spacing: 2em)
   // Stylize figures
-  set figure(placement: auto)
-  show figure: set place(clearance: 1.5em)
-
+  set figure(placement: auto, gap: 1.5em)
+  show figure: set par(leading: 1em)
+  show figure: set place(clearance: 2em)
+  // Stylize tables
+  set table(inset: 0.66em, columns: (97.5%))
+  show table: set par(leading: 0.75em)
+  // Stylize lists
+  set list(indent: 1.25em)
+    
   // ABSTRACTS
   page(header: none, footer: none)[
     #set heading(outlined: false, bookmarked: true)
@@ -80,6 +90,7 @@
   set page(
     header: locate(
       header_loc => {
+        set text(size: 0.8em)
         let current_page_number = counter(page).at(header_loc).first()
         let all_h1_appearing_after_header = query(heading.where(level: 1, outlined: true).after(header_loc), header_loc)
 
@@ -166,14 +177,14 @@
             #h(0.6em)
             #text(style: "italic")[#short_title]
           ]
-
+          set text(size: 0.8em)
           if calc.even(current_page_number) {
             align(right)[#footer_text]
           } else {
             align(left)[#footer_text]
           }
         } else {
-          align(center)[#text(size: footer_font_size)[#current_page_number]]
+          align(center)[#text(size: 1em)[#current_page_number]]
         }
       },
     ),

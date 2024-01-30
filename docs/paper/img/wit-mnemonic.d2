@@ -1,0 +1,70 @@
+vars: {
+	d2-config: {
+		layout-engine: elk
+	}
+}
+
+classes: {
+	transp: {
+		style.fill: transparent
+		style.stroke: transparent
+		label: ""
+	}
+	text: {
+		style.font-size: 72
+		style.font: mono
+		shape: text
+	}
+}
+
+direction: down
+
+mnemonic: {
+	class: transp
+	style.fill: "#FCFCFC"
+	shape: circle
+
+	box1: {
+		class: transp
+		grid-rows: 1
+		horizontal-gap: 80
+		
+		box1: {
+			grid-rows: 1
+			grid-gap: 0
+			class: transp
+
+			w: {
+				class: text
+				style.font-color: forestgreen
+			}
+			iki: {
+				class: text
+			}
+		}
+		box2: {
+			grid-rows: 1
+			grid-gap: 0
+			class: transp
+
+			g: {
+				class: text
+			}
+			it: {
+				class: text
+				style.font-color: forestgreen
+			}
+		}
+	}
+	box2: {
+		class: transp
+		wit: {
+			class: text
+			style.font-color: forestgreen
+		}
+	}
+
+	box1 -> box2: {
+		style.stroke-width: 5
+	}
+}

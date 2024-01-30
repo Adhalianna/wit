@@ -1,0 +1,213 @@
+vars: {
+	...@shared.vars
+	d2-config: {
+		layout-engine: elk
+	}
+}
+
+classes: {
+	...@shared.classes
+	document: {
+		shape: document
+	}
+	yes: {
+		style.font-color: darkgreen
+		style.font-size: 22
+		label: "Yes"
+	}
+	no: {
+		style.font-color: crimson
+		style.font-size: 22
+		label: "No"
+	}
+}
+
+start: Start {
+	shape: oval
+}
+
+start -> req
+
+req: A page URI {
+	shape: parallelogram
+}
+
+req -> decision1
+
+decision1:|
+	Was the host specified
+	in the URI?
+| {
+	shape: diamond
+}
+
+decision1 -> host_known: {
+	class: yes
+}
+
+host_known:|
+	Send an HTTP request
+	for the selected file
+	at selected version
+	to that host
+| {
+	shape: rectangle
+}
+
+host_known -> decision5
+
+decision5 -> err.page: {
+	class: no
+}
+decision5 -> success2.page: {
+	class: yes
+}
+
+decision5: Success? {
+	shape: diamond
+}
+
+decision1 -> step1: {
+	class: no
+}
+
+step1:|
+	Attempt to find file at specified
+	version in local repository
+| {
+	shape: rectangle
+}
+
+step1 -> decision2
+
+decision2: Found? {
+	shape: diamond
+}
+
+decision2 -> serve_local: {
+	class: yes
+}
+
+serve_local:|
+	Render the file
+	to HTML format
+| {
+	shape: rectangle
+}
+
+serve_local -> success.page
+
+decision2 -> ask_peers: {
+	class: no
+}
+
+ask_peers:|
+	Ask peers for a relevant
+	entry in DHT
+| {
+	shape: rectangle
+}
+
+ask_peers -> decision3
+
+decision3: Entry found? {
+	shape: diamond
+}
+
+decision3 -> err.page: {
+	class: no
+}
+
+decision3 -> entry: {
+	class: yes
+}
+
+entry: {
+	shape: parallelogram
+	label: ""
+
+	data: PageHosts entry {
+		grid-rows: 2
+		grid-columns: 2
+		grid-gap: 0
+		style.font-size: 18
+
+		key_kind: version and path
+		key_val: "(\"ver132\", \"/some/file\")" {
+			style.font: mono
+		}
+		val_kind: hosts list
+		val_val: "[\"example.org\", \"192.0.2.1:3000\"]" {
+			style.font: mono
+		}
+	}
+}
+
+entry -> select_first
+
+select_first: |
+	Ask the first host in the obtained
+	list of hosts for the file
+| {
+	shape: rectangle
+}
+
+select_first -> decision4
+
+decision4: |
+	Success?
+| {
+	shape: diamond
+}
+
+decision4 -> success.page: {
+	class: yes
+}
+decision4 -> err.page: {
+	class: no
+}
+
+err: {
+	class: [box]
+
+	page: {
+		class: document
+		label: "404 Not Found"
+		style.font: mono
+		style.bold: true
+		style.font-size: 20
+	}
+
+	_.endErr: End {
+		shape: oval
+	}
+
+	page -> _.endErr
+}
+
+success: {
+	class: [box]
+
+	page: {
+		class: document
+		label: A wiki page in HTML
+	}
+
+	_.endSuccess: End {
+		shape: oval
+	}
+
+	page -> _.endSuccess
+}
+
+success2: {
+	class: box
+	page: {
+		class: document
+		label: A wiki page in HTML
+	}
+	_.endSuccess2: End {
+		shape: oval
+	}
+	page -> _.endSuccess2
+}

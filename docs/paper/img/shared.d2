@@ -1,51 +1,84 @@
-vars {
-    http-color: mediumpurple
-    user-interaction-color: royalblue
-    git-transport-color: orangered
+vars: {
+  http-color: mediumpurple
+  user-interaction-color: royalblue
+  git-transport-color: orangered
+  p2p-color: forestgreen
 }
 
-classes {
-    env: {
-        style.stroke-dash: 1
-        label.near: outside-top-center
-        style.border-radius: 100
-        style.fill: transparent
-        style.double-border: false
-        style.bold: false
-        style.italic: true
-    }
-    legend: {
-        label: Legend
-        label.near: top-center
-        style.fill: transparent
-        style.underline: true
-        grid-columns: 1
-        grid-gap: 10
-    }
-    legend-line: {
-        style.fill: transparent
-        style.stroke: transparent
-        label: ""
-        grid-rows: 1
-        grid-gap: 0
-    }
-    legend-dot: {
-        style.stroke: transparent
-        label: ""
-        shape: rectangle
-        width: 20
-        height: 30
-    }
-    box: {
-        style.fill: transparent
-        style.stroke: transparent
-        label: ""
-    }
-    note: {
-        style.fill: transparent
-        style.stroke: transparent
-        style.text-transform: none
-        style.font-size: 20
-        style.font: null
-    }
+classes: {
+  env: {
+    style.stroke-dash: 3
+    label.near: outside-top-left
+    style.border-radius: 15
+    style.stroke-width: 1
+    style.fill: transparent
+    style.double-border: false
+    style.bold: false
+    style.italic: true
+  }
+  server: {
+    icon: https://icons.terrastruct.com/tech%2F022-server.svg
+  }
+  legend: {
+    label: Legend
+    near: bottom-right
+    label.near: top-center
+    style.fill: white
+    style.font-size: 32
+    style.text-transform: uppercase
+    style.stroke-width: 1
+    #style.double-border: true
+    grid-columns: 1
+    vertical-gap: 20
+    horizontal-gap: 15
+  }
+  legend-line: {
+    style.fill: transparent
+    style.stroke: transparent
+    label: ""
+    grid-rows: 1
+    vertical-gap: 0
+    horizontal-gap: 8
+  }
+  legend-dot: {
+    style.stroke: transparent
+    label: ""
+    shape: rectangle
+    width: 8
+    height: 12
+  }
+  box: {
+    style.fill: transparent
+    style.stroke: transparent
+    style.stroke-width: 0
+    icon: null
+    style.border-radius: 0
+    label: ""
+  }
+  container: {
+    icon.near: top-center
+    label.near: outside-top-left
+  }
+  note: {
+    style.fill: transparent
+    style.stroke: transparent
+    style.stroke-width: 15
+    style.text-transform: none
+    style.font-size: 16
+    style.bold: false
+    style.italic: false
+    shape: text
+  }
+  libp2p-transport: {
+    style.stroke: ${p2p-color}
+    style.font-color: ${p2p-color}
+  }
+  git-transport: {
+    style.stroke: ${git-transport-color}
+    style.font-color: ${git-transport-color}
+  }
+  http-transport: {
+    style.stroke: ${http-color}
+    style.font-color: ${http-color}
+  }
 }

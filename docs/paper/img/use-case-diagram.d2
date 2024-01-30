@@ -1,0 +1,95 @@
+vars: {
+  d2-config: {
+    layout-engine: elk
+  }  
+}
+
+classes: {
+  use_case: {
+    shape: oval
+    height: 100
+  }
+  includes: {
+    label: "<<includes>>"
+    style.stroke-dash: 4
+  }
+  actor: {
+    shape: person
+    width: 100
+    height: 100
+  }
+  conn: {
+    style.border-radius: 10
+  }
+}
+
+direction: right
+
+developer: software\ndeveloper {
+  class: actor
+}
+
+admin: {
+  class: actor
+}
+
+system: System {
+  shape: rectangle
+  label.near: top-center
+  width: 300
+
+  case4
+  case6
+  case3
+
+  case1: Render files\nas HTML pages {
+    class: use_case
+  }
+  case2: Save file changes {
+    class: use_case
+  }
+  case3: Pull pages and content\nfrom other wikis {
+    class: use_case
+  }
+  case4: Host wiki {
+    class: use_case
+  }
+  case5: Verify link correctnes\nfor given version {
+    class: use_case
+  }
+  case6: Pull files for\nselected version {
+    class: use_case
+  }
+
+  case1 -> case3: {
+    class: [includes;conn]
+  }
+  case2 -> case5: {
+    class: [includes;conn]
+  }
+}
+
+developer -> system.case2: {
+  class: [conn]
+}
+developer -> system.case5: {
+  class: [conn]
+}
+
+admin -> system.case4: {
+  class: [conn]
+}
+
+browser: {
+  class: actor
+}
+
+system.case1 <- browser: {
+  class: [conn]
+}
+system.case3 <- browser: {
+  class: [conn]
+}
+system.case6 <- browser: {
+  class: [conn]
+}

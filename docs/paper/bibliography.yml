@@ -2,8 +2,8 @@ decentralized_git_version_control:
     type: thesis
     title: "A decentralized Git version control system – A proposed architecture and evaluation of decentralized Git using DAG-based distributed ledger"
     author:
-        - Christian Habib
-        - Ilian Ayoub
+        - Habib, Christian Habib
+        - Ayoub, Ilian
     date: 2022-10-14
     page-total: 43
     serial-number:
@@ -24,9 +24,9 @@ version_in_federated_database:
     type: article
     title: "Version Propagation in Federated Database Systems"
     author:
-        - Martin Schönhoff
-        - Markus Strässler
-        - Klaus R. Dittrich
+        - Schnöhoff, Martin
+        - Strässler, Markus
+        - Dittrich, Klaus R.
     serial-number:
         doi: 10.1109/IDEAS.2001.938085
         isbn: 0-7695-1140-6
@@ -43,9 +43,9 @@ open_web_application_lifecycle:
     type: article
     title: Federated Application Lifecycle Management Based on an Open Web Architecture
     author:
-        - Florian Matthes
-        - Christian Neubert
-        - Alexander Steinhoff
+        - Matthes, Florian
+        - Neubert, Christian
+        - Steinhoff, Alexander
     archive: Citeseer
     parent:
         type: conference
@@ -57,8 +57,8 @@ version_control_in_distributed_software:
     type: article
     title: "Version Control in Distributed Software Development: a Systematic Mapping Study"
     author:
-        - Catarina Costa
-        - Leonardo Murta
+        - Costa, Catarina
+        - Murta, Leonardo
     date: 2013-09-30
     serial-number:
         isbn: 978-0-7695-5057-2
@@ -75,7 +75,7 @@ analysis_of_distributed_version_control:
     type: thesis
     title: "Analysis and Comparison of Distributed Version Control Systems"
     author:
-        - Daniel Knittl-Frank
+        - Knittl-Frank, Daniel
     date: 2010-06
     location: Hagenberg, Austria
     publisher: University of Applied Sciences, Upper Austria
@@ -85,7 +85,7 @@ review_distributed_ledger:
     title: A Review of Distributed Ledger Technologies
     authors:
         - Nabil El Ioini
-        - Claus Pahl
+        - Pahl, Claus
     serial-number:
         doi: 10.1007/978-3-030-02671-4_16
         isbn: 978-3-030-02671-4
@@ -105,13 +105,13 @@ modeling_high_quality_knowledge_sharing:
     title: "Modeling High-Quality Knowledge Sharing in cross-functional software developement teams"
     author:
         - Shahla Ghobadi
-        - John D'Ambra
+        - D'Ambra, John
 
 strategic_alliances_and_knowledge_sharing:
     type: article
     title: "Strategic alliances and knowledge sharing: synergies or silos?"
     author:
-        - Julia Connell
+        - Connell, Julia
         - Ranjit Voola
     doi: 10.1108/13673270710752108
     date: 2007-06-05
@@ -160,19 +160,19 @@ consistency_between_architecture_and_informal_docs:
     publisher: IEEE
     page-range: 250-253
     author:
-        - Jan Keim
-        - Anne Koziolek
+        - Keim, Jan
+        - Koziolek, Anne
 
 ebon_for_consistency:
     type: article
     title: Ensuring Consistency between Designs, Documentation, Formal Specifications, and Implementations
     author:
-        - Joseph R. Kiniry
-        - Fintan Fairmichael
+        - Kiniry, Joseph R.
+        - Fairmichael, Fintan
     editor:
-        - Grace A. Lewis
-        - Iman Poernomo
-        - Christine Hofmeister
+        - Lewis, Grace A.
+        - Poernomo, Iman
+        - Hofmeister, Christine
     page-range: 242-261
     publisher: Springer, Berlin, Heidelberg
     serial-number:
@@ -207,9 +207,9 @@ alignment_flexibility_knowledge_based_perspective:
     title: "Process Documentation, Operational Alignment, and Flexibility in IT Outsourcing Relationships: A Knowledge-Based Perspective"
     date: 2008-01-01
     author:
-        - Sebastian F. Martin
-        - Heinz-Theo Wagner
-        - Daniel Beimborn
+        - Martin, Sebastian F. 
+        - Wagner, Heinz-Theo
+        - Beimborn, Daniel
 
 libgit2_desc:
     type: web
@@ -217,3 +217,487 @@ libgit2_desc:
     url:
         value: https://libgit2.org/
         date: 2024-01-07
+
+fedwiki_profiligate_copying:
+    type: article
+    title: Profligate Copying
+    url:
+        value: http://fed.wiki.org/view/welcome-visitors/view/about-federated-wiki/about.fed.wiki/profligate-copying
+        date: 2024-01-18
+    parent:
+        type: web
+        title: fed.wiki.org - Federated Wiki
+        url:
+            value: http://fed.wiki.org
+            date: 2024-01-18
+
+activitypub_w3c_recommendation:
+    type: report
+    title: ActivityPub - W3C Recommendation
+    url:
+        value: https://www.w3.org/TR/2018/REC-activitypub-20180123/
+        date: 2024-01-18
+
+wiki_as_pattern_language:
+    type: article
+    title: Wiki as Pattern Language
+    date: 2014
+    parent:
+        type: proceedings
+        title: Proceedings of the 20th Conference on Pattern Languages of Programs
+        location: Monticello, Illinois, USA
+        date: 2013-10
+    author:
+        - Cunningham, Ward
+        - Mehaffy, Michael W.
+
+distributed_learning_and_collab:
+    type: chapter
+    title: Digital Architectures for Distributed Learning and Collaboration
+    author:
+        - Rimland, Jeff
+    page-range: 67-79
+    parent:
+        type: book
+        title: "Cognitive Systems Engineering: An Integrative Living Laboratory Framework"
+        editor:
+            - McNesse, Michael D.
+            - Forster, Peter Kent
+        publisher: Taylor & Francis Group, CRC Press
+        serial-number:
+            isbn: 978-1-138-74823-1
+        date: 2017-07-12
+
+nurturing_collaborative_relations:
+    type: article
+    title: "Nurturing Collaborative Relations: Building Trust in Interorganizational Collaboration"
+    author:
+        - Vangen, Siv
+        - Huxham, Chris
+    serial-number:
+        doi: 10.1177/0021886303039001001
+    page-range: 5-31
+    parent:
+        type: periodical
+        title: The Journal of Applied Behavioral Science
+        date: 2003
+        volume: 39
+        issue: 1
+
+CGI_scrits_www:
+    type: article
+    title: "CGI scripts: Gateways to World-Wide Web"
+    date: 1996-06-01
+    author:
+        - Kieley, James M.
+    serial-number:
+        doi: 10.3758/BF03204757
+
+minimal_collaborative_persona:
+    type: article
+    title: "User stories don't help users: introducing persona stories"
+    date: 2013
+    author:
+        - Hudson, William
+    serial-number:
+        doi: 10.1145/2517668
+    page-range: 50-53
+    url:
+        value: https://dl.acm.org/doi/fullHtml/10.1145/2517668
+        date: 2024-01-24
+    parent:
+        type: periodical
+        title: Interactions
+        publisher: Association for Computing Machinery, New York, United States
+        serial-number:
+            issn: 1072-5520
+            eissn: 1558-3449
+        volume: 20
+        issue: 6
+        date: 2013-12
+
+libgit2_transports_src:
+    type: misc
+    title: libgit2/src/libgit2/transport.c
+    url:
+        value: https://github.com/libgit2/libgit2/blob/3fccf7468ba7a9a9f764984435db83f4588ec905/src/libgit2/transport.c
+    parent:
+        type: repository
+        url:
+            value: https://github.com/libgit2/libgit2
+        title: libgit2
+
+runtime_performance_of_rust:
+    type: article
+    title: Towards Understanding the Runtime Performance of Rust
+    serial-number:
+        doi: 10.1145/3551349.3559494
+    page-total: 6
+    author:
+        - Zhang, Yuchen
+        - Zhang, Yunhang
+        - Portokalidis, Georgios
+        - Xu, Jun
+    date: 2023-01-05
+    parent:
+        type: proceedings
+        title: "ASE '22: Proceedings of the 37th IEEE/ACM International Conference on Automated Software Engineering"
+        serial-number:
+            isbn: 978-1-4503-9475-8
+        publisher: Association for Computing Machinery, New York, United States
+        parent:
+            type: conference
+            title: "ASE '22: 37th IEEE/ACM International Conference on Automated Software Engineering"
+            location: Rochester MI USA
+            date: 2022-10-10
+            
+rust_performance_productivity_in_hpc:
+    type: article
+    title: "Performance vs Programming Effort between Rust and C on Multicore Architectures: Case Study in N-Body"
+    publisher: IEEE
+    page-range: 1-10
+    author:
+        - Costanzo, Manuel
+        - Rucci, Enzo
+        - Naiouf, Marcelo
+        - De Giusti, Armando
+    serial-number:
+        doi: 10.1109/CLEI53233.2021.9640225
+        isbn: 978-1-6654-9503-5
+    date: 2021-12-21
+    parent:
+        type: conference
+        date: 2021-10-25
+        title: 2021 XLVII Latin American Computing Conference (CLEI)
+        location: Cartago, Costa Rica
+
+wikipedia_definition:
+    type: article
+    title: Wiki
+    url:
+        value: https://en.wikipedia.org/w/index.php?title=Wiki&oldid=1199188563
+        date: 2024-01-26
+    parent:
+        type: web
+        title: en.wikipedia.org
+
+wiki_for_software_requirements:
+    type: article
+    title: Wiki based requirements documentation of generic software products
+    page-range: 42-51
+    author:
+        - Silveira, Clara
+        - Faria, João Pascoal
+        - Aguiar, Ademar
+        - Vidal, Raul
+    parent:
+        type: proceedings
+        title: Proceedings of the 10th Australian Workshop on Requirements Engineering
+        date: 2005-11
+
+social_media_crisis_fediverse_the_verge:
+    type: article
+    title: "2023 in social media: the case for the fediverse"
+    url:
+        value: https://www.theverge.com/23990974/social-media-2023-fediverse-mastodon-threads-activitypub
+        date: 2024-01-26
+    author:
+        - Pierce, David
+    date: 2023-12-19
+    publisher: The Verge, Vox Media
+    parent:
+        type: web
+        title: The Verge
+        url:
+            value: https://www.theverge.com
+
+fediverse_stats:
+    type: web
+    url:
+        value: https://web.archive.org/web/20240115145953/https://fediverse.observer/stats#user_growth
+        date: 2024-01-26
+    title: Fediverse Observer
+    note: preserved with Internet Archive Wayback Machine
+
+data_paradoxes:
+    type: chapter
+    title: Data Paradoxes
+    date: 2023-11-10
+    author:
+        - Birch, Kean
+    page-range: 107-124
+    serial-number:
+        doi: 10.1007/978-3-031-46402-7_6
+        isbn: 978-3-031-46402-7
+    parent:
+        type: book
+        title: Data Enclaves
+        publisher: Palgrave Macmillan, Cham
+
+knowledge_sharing_in_wiki_communities:
+    type: article
+    title: "Knowledge sharing in wiki communities: an empirical study"
+    author:
+        - Wang, Wei-Tsong
+        - Wei, Zu-Hao
+    date: 2011-09-27
+    serial-number:
+        doi: 10.1108/14684521111176516
+        issn: 1468-4527
+    page-range: 799-820
+    parent:
+        type: periodical
+        volume: 35
+        issue: 5
+        serial-number:
+            issn: 1468-4527
+        publisher: Emerald Group Publishing Limited
+        
+wiki_based_construction_knowledge:
+    type: article
+    title: Wiki-based Construction Knowledge Sharing
+    author:
+        - Mills, Thomas
+    date: 2007
+    page-range: 1-9
+    parent:
+        type: conference
+        title: The ASC Annual Conference
+        date: 2007
+
+exploratory_study_online_wiki_knowledge_sharing:
+    type: article
+    title: The Exploratory Study of On-Line Knowledge Sharing by Applying Wiki Collaboration System
+    author:
+        - Kang, Ya-Chin
+        - Chen, Guan-Li
+        - Ko, Chao-Tan
+        - Fang, Chung-Hsiung
+    serial-number:
+        doi: 10.4236/ib.2010.23031
+    date: 2010-07-29
+    parent:
+        type: periodical
+        title: iBusiness
+        serial-number:
+            issn: 2150-4083
+        volume: 2
+        issue: 3
+        date: 2010-09
+        publisher: Scientific Research Publishing
+
+wiki_based_knowledge_sharing_knowledge_intensive_organization:
+    type: article
+    title: Wiki-based Knowledge Sharing in A Knowledge-Intensive Organization
+    author:
+        - Hu, Changping
+        - Zhao, Yang
+        - Zhao, Xueqin
+    date: 2007
+    serial-number:
+        doi: 10.1007/978-0-387-75494-9_3
+        isbn: 978-0-387-75494-9
+    publisher: Springer, Boston, MA
+    page-range: 18-25
+    parent:
+        type: proceedings
+        title: Integration and Innovation Orient to E-Society
+        volume: 2
+        parent:
+            type: conference
+            title: Seventh IFIP International Conference on e-Business, e-Services, and e-Society (I3E2007)
+            date: 2007-10-10
+            location: Wuhan, China
+        
+wikifailure_limitation_of_technology:
+    type: article
+    title: "Wikifailure: the Limitations of Technology for Knowledge Sharing"
+    author:
+        - Garcia-Perez, Alexeis
+        - Ayres, Robert
+    date: 2010-01-01
+    page-range: 43-52
+    parent:
+        type: periodical
+        volume: 8
+        issue: 1
+        title: The Electronic Journal of Knowledge Management
+        publisher: Academic Conferences & Publishing International Ltd, United Kingdom
+        serial-number:
+            eissn: 1479-4411
+
+motivation_to_share_using_wiki:
+    type: article
+    title:  Motivation to share knowledge using wiki technology and the moderating effect of role perceptions
+    author:
+        - Arazy, Ofer
+        - Gellatly, Ian
+        - Brainin, Esther
+        - Nov, Oded
+    date: 2015-07-28
+    url:
+        value: https://asistdl.onlinelibrary.wiley.com/doi/full/10.1002/asi.23579
+        date: 2024-01-27
+    serial-number:
+        doi: 10.1002/asi.23579
+    page-range: 2362-2378
+    parent:
+        type: periodical
+        volume: 67
+        issue: 10
+        title: The Journal of the Association for Information Science and Technology
+        serial-number:
+            issn: 2330-1643
+        publisher: Association for Information Science & Technology
+        date: 2016
+
+knowledge_construction_and_sharing_wiki_approach:
+    type: article
+    title: "Knowledge construction and knowledge sharing: a Wiki-based approach"
+    author:
+        - Montero-Fleta, Begoña
+        - Pérez-Sabater, Carmen
+    serial-number:
+        doi: 10.1016/j.sbspro.2011.11.118
+    date: 2011-12-12
+    page-range: 622-627
+    parent:
+        type: periodical
+        title: Procedia - Social and Behavioral Sciences
+        volume: 28
+
+analysis_wiki_and_non_wiki_knowledge_management_systems:
+    type: article
+    title: A comparative analysis of the usage and infusion of wiki and non-wiki-based knowledge management systems
+    date: 2010-12-09
+    author:
+        - Hester, Andrea J.
+    serial-number:
+        doi: 10.1007/s10799-010-0079-9
+    page-range: 335-355
+    parent:
+        type: periodical
+        title: Information Technology and Management
+        publisher: Springer Nature
+        volume: 12
+        date: 2011-12
+        serial-number:
+            issn: 1573-7667
+
+gitlab_wiki_docs:
+    type: web
+    title: Wiki | Gitlab 
+    url: 
+        value: https://docs.gitlab.com/16.8/ee/user/project/wiki/
+        date: 2024-01-28
+    
+
+github_wiki_docs:
+    type: web
+    title: Viewing a wiki's history of changes
+    url:
+        value: https://docs.github.com/en/communities/documenting-your-project-with-wikis/viewing-a-wikis-history-of-changes
+        date: 2024-01-28
+
+history_of_version_control:
+    type: article
+    title: The history of version control
+    author:
+        - Ruperelia, Nayan B.
+    date: 2010-01-25
+    page-range: 5-9
+    serial-number:
+        doi: 10.1145/1668862.1668876
+    parent:
+        type: periodical
+        title: ACM SIGSOFT Software Engineering Notes
+        volume: 35
+        issue: 1
+        serial-number:
+            issn: 0163-5948
+        publisher: Association for Computing Machinery, New York, United States
+
+version_control_systems_review:
+    type: article
+    title: "Version Control System: A Review"
+    author:
+        - Zolkifli, Nazatul Nurlisa
+        - Ngah, Amir
+        - Deraman, Aziz
+    serial-number:
+        doi: 10.1016/j.procs.2018.08.191
+    page-range: 408-415
+    url: https://www.sciencedirect.com/science/article/pii/S1877050918314819
+    parent:
+        type: periodical
+        title: Procedia Computer Science
+        volume: 135
+        date: 2018
+        serial-number:
+            issn: 1877-0509
+        publisher: Elsevier
+        url:
+            value: https://www.sciencedirect.com/journal/procedia-computer-science/
+
+distributed_systems_book_def:
+    type: chapter
+    title: "What is a distributed system?"
+    page-range: 2-5
+    page-total: 4
+    author:
+        - van Steen, Maarten
+        - Tanenbaum, Andrew S.
+    parent:
+        type: book
+        title: Distributed Systems
+        author:
+            - van Steen, Maarten
+            - Tanenbaum, Andrew S.
+        serial-number:
+            isbn: 978-1543057386
+        page-total: 596
+        publisher: CreateSpace Independent Publishing Platform
+        date: 2017-02-01
+
+distributed_systems_book_design_goals:
+    type: chapter
+    title: Design goals
+    page-range: 7-24
+    page-total: 16
+    author:
+        - van Steen, Maarten
+        - Tanenbaum, Andrew S.
+    parent:
+        type: book
+        title: Distributed Systems
+        author:
+            - van Steen, Maarten
+            - Tanenbaum, Andrew S.
+        serial-number:
+            isbn: 978-1543057386
+        page-total: 596
+        publisher: CreateSpace Independent Publishing Platform
+        date: 2017-02-01
+
+prevalence_of_git_uri_in_scholar_publications:
+    title: Assessing the Prevalence and Archival Rate of URIs to Git Hosting Platforms in Scholarly Publications
+    type: article
+    author:
+        - Escamilla, Emily
+    date: 2021-04
+    
+github_octoverse_report_2023:
+    title: "Octoverse: The state of open source and rise of AI in 2023"
+    type: article
+    author:
+        - Daigle, Kyle
+        - GitHub Staff
+    date: 2023-11-08
+    url:
+        value: https://github.blog/2023-11-08-the-state-of-open-source-and-ai/
+        date: 2024-01-28
+    parent:
+        type: blog
+        title: GitHub blog
+        url:
+            value: https://github.blog/

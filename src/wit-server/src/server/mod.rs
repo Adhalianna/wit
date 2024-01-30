@@ -1,9 +1,11 @@
+use libp2p::futures::lock::Mutex;
 use std::{borrow::Cow, path::Path, sync::Arc};
 use tokio::sync::Mutex;
 
 pub mod get;
 pub mod git_proxy;
 pub mod link;
+pub mod p2p;
 pub mod render;
 
 pub use render::render;
@@ -27,6 +29,7 @@ pub fn run(storage_path: &str, address: Option<String>) {
     let full_path = storage_path.canonicalize().unwrap();
     let address = address.unwrap_or("localhost:3000".to_owned());
 
+    // Needed for git-http-backend, which is executed to handle git traffic coming through HTTP
     std::env::set_var("GIT_PROJECT_ROOT", &storage_path);
 
     tracing::info!(
@@ -43,13 +46,14 @@ pub struct ServerState {
     address: Cow<'static, String>,
 }
 
+/// Should pack ready to use state and connect routes. Anything else goes into [`run()`]
 pub fn run_axum_server(git_repo: git2::Repository, address: String) {
     let state = ServerState {
-        git_repo: Arc::new(Mutex::new(git_repo)),
+        git_repo: Arc::new(Mutexex::new(git_repo)),
         address: Cow::Owned(address.clone()),
     };
 
-    let main_router = axum::Router::new()
+    let router = axum::Router::new()
         .route("/favicon.ico", axum::routing::any(|| async { "not set" }))
         .route("/git", git_proxy::new_proxy("/git"))
         .route("/git/*path", git_proxy::new_proxy("/git/"))
@@ -63,6 +67,6 @@ pub fn run_axum_server(git_repo: git2::Repository, address: String) {
         .block_on(async {
             let tcp_listener = tokio::net::TcpListener::bind(address).await.unwrap();
 
-            axum::serve(tcp_listener, main_router).await.unwrap();
+            axum::serve(tcp_listener, router).await.unwrap();
         })
 }

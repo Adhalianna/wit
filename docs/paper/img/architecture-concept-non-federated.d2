@@ -1,46 +1,45 @@
 devenv: Single Project Environment {
-    style.fill: transparent
-    style.stroke-dash: 6
+  style.fill: transparent
+  style.stroke-dash: 6
 
-    user: User
-    user.shape: person 
-            
-    repo: git repository
-    repo.submodule: wit submodule copy
-    
-    user --> repo.submodule: writes changes to
+  user: User
+  user.shape: person
 
-    cli: CLI utility
-    cli.shape: square
+  repo: git repository
+  repo.submodule: wit submodule copy
 
-    user --> cli: uses
-    repo.submodule --> cli: is managed by    
+  user -> repo.submodule: writes changes to
+
+  cli: CLI utility
+  cli.shape: square
+
+  user -> cli: uses
+  repo.submodule -> cli: is managed by
 }
 
-devenv2 {
-    label: ""
-    
-    style.fill: transparent
-    style.stroke-dash: 6
-    
-    user: User
-    user.shape: person 
-            
-    repo: git repository
-    repo.submodule: wit submodule copy
-    
-    user --> repo.submodule
+devenv2: {
+  label: ""
 
-    cli: CLI utility
-    cli.shape: square
+  style.fill: transparent
+  style.stroke-dash: 6
 
-    user --> cli
-    repo.submodule --> cli
+  user: User
+  user.shape: person
+
+  repo: git repository
+  repo.submodule: wit submodule copy
+
+  user -> repo.submodule
+
+  cli: CLI utility
+  cli.shape: square
+
+  user -> cli
+  repo.submodule -> cli
 }
 
 remote1: wit server
 remote1.shape: cloud
 
-
-devenv.cli --> remote1: publishes changes
+devenv.cli -> remote1: publishes changes
 devenv2.cli -> remote1: publishes changes
