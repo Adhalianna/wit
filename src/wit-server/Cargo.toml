@@ -13,14 +13,17 @@ vendored = ["git2/vendored-libgit2", "git2/vendored-openssl"]
 git2 = { workspace = true }
 clap = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
 toml = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 thiserror = { workspace = true }
-tokio = { workspace = true }
+tokio = { workspace = true, features = ["sync"] }
+reqwest = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 url = { workspace = true, features = ["serde"] }
 tokio-util = { version = "0.7.10", features = ["io"] }
+tokio-stream = { version = "0.1.14", features = ["sync"] }
 axum = { version = "0.7.4", features = ["tracing", "macros", "http2"] }
 markdown-it = { version = "0.6.0" }
 tower-cgi = { git = "https://github.com/Adhalianna/tower-cgi", rev = "c1b71dd57e09e54254b3d00728a5df2a40ef507b", features = [
@@ -38,5 +41,17 @@ libp2p = { version = "0.53.2", features = [
   "macros",
   "kad",
   "request-response",
+  "cbor",
 ] }
 redb = { version = "1.5.0" }
+base64 = { version = "0.21.7" }
+serde_with = { version = "3.6.1", features = ["base64"] }
+single-instance = { version = "0.3.3" }
+
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+path = "src/main.rs"
+name = "wit-server"

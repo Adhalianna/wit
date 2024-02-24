@@ -1,4 +1,4 @@
-use crate::file_data::FileData;
+use crate::file::file_data::FileData;
 
 #[derive(Clone, Debug)]
 pub struct StoredFile {
@@ -9,13 +9,13 @@ pub struct StoredFile {
 impl StoredFile {
     pub fn new(file_path: &str, data: Vec<u8>, is_binary: bool) -> Self {
         let (name, suffix) = file_path.rsplit_once(".").unwrap_or((file_path, ""));
-        let name = name; //TODO: strip leading directories in the path
+        // let name = name; //TODO: strip leading directories in the path
         let data = {
             if is_binary {
                 FileData::Binary(data)
             } else {
                 let (name, suffix) = file_path.rsplit_once(".").unwrap_or((file_path, ""));
-                let name = name; //TODO: strip leading directories in the path
+                // let name = name; //TODO: strip leading directories in the path
                 match (name, suffix) {
                     (_, "md") => FileData::Markdown(data),
                     (_, "html") => FileData::HTML(data),

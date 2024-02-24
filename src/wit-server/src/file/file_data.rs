@@ -1,9 +1,12 @@
-#[derive(Clone, Debug)]
+use serde_with::{base64::Base64, serde_as};
+
+#[serde_as]
+#[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
 pub enum FileData {
-    Binary(Vec<u8>),
-    Markdown(Vec<u8>),
-    HTML(Vec<u8>),
-    OtherTxt(Vec<u8>),
+    Binary(#[serde_as(as = "Base64")] Vec<u8>),
+    Markdown(#[serde_as(as = "Base64")] Vec<u8>),
+    HTML(#[serde_as(as = "Base64")] Vec<u8>),
+    OtherTxt(#[serde_as(as = "Base64")] Vec<u8>),
 }
 
 impl FileData {

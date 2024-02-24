@@ -2,12 +2,16 @@
 default:
     @just --list
 
+# resolve fonts to files for use in d2
 d2-regular-font := `fc-match "Times New Roman" -f "%{file}"`
 d2-italic-font := `fc-match "Times New Roman:italic" -f "%{file}"`
 d2-bold-font := `fc-match "Times New Roman:bold" -f "%{file}"`
+
+# pretty printing
 bold:=`tput bold`
 reset:=`tput sgr0`
 
+# D2 theming env vars
 export D2_PAD := "0"
 export D2_CENTER := "true"
 #export D2_FONT_REGULAR := d2-regular-font
@@ -16,19 +20,16 @@ export D2_CENTER := "true"
 export D2_THEME := "1"
 export D2_FORCE_APPENDIX := "true"
 
-# render .d2 files in under docs/design to .svg graphics
-_render-design-svg:
-    cd docs/design && \
-    d2 --layout dagre --pad 5 architecture-concept1.d2 && \
-    d2 --layout dagre --pad 5 architecture-concept2.d2 && \
-    d2 --layout dagre --pad 5 communication-protocol1.d2
+# verbosity level of tracing (read https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html)
+# can be overriden from commandline (see https://just.systems/man/en/chapter_36.html)
+tracing_level := "DEBUG,tower_cgi=error,libp2p_swarm=warn"
 
-# render the document present under docs/design
-render-design: _render-design-svg
-   cd docs/design && \
-    typst compile design.typ
+# use cargo-limit instead of normal cargo commands if available
+export CARGO_MSG_LIMIT := "4"
+cargo-test:=`(cargo ltest --help >/dev/null && echo "cargo ltest") || echo "cargo test"`
+cargo-check:=`(cargo lclippy --help >/dev/null && echo "cargo lclippy") || echo "cargo check"`
 
-# Whacky, nasty thing but makes the recipes sooo much faster.
+# Whacky, nasty thing but makes the recipes so much faster.
 # See: https://unix.stackexchange.com/a/742040
 # Should be decently portable, uses POSIX shell.
 start_parallel:='set -o pipefail; run_parallel() {'
@@ -51,14 +52,9 @@ render-paper:
     cd docs/paper && \
         typst compile paper.typ
 
-# render presentations used in seminar classes
-render-seminar-resources:
-    cd docs/seminar && \
-    typst compile presentation1.typ && \
-    d2 --layout dagre --pad 0 architecture-simple.d2 && \
-    d2 --layout dagre --pad 0 web-interaction.d2 && \
-    typst compile presentation2.typ
-
 # run tests with cargo
 test:
-    cargo test --workspace -- --nocapture
+    RUST_LOG={{tracing_level}} {{cargo-test}} --workspace -- --nocapture
+
+check:
+    {{cargo-check}} --workspace

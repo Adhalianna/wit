@@ -24,79 +24,99 @@ fn canonicalize_url(url: &str) -> String {
 }
 
 pub fn init_submodule(repo_at: &str, wit_dir: Option<&str>, from: &str) {
-    let git_repo = git2::Repository::discover(repo_at).unwrap();
+    let mut git_repo = git2::Repository::discover(repo_at).unwrap();
 
     let submodule_remote_url = canonicalize_url(&from);
     let wit_dir = wit_dir.unwrap_or(DEFAULT_WIT_DIR);
-    let mut submodule = git_repo
-        .submodule(&submodule_remote_url, Path::new(wit_dir), false)
+
+    {
+        let mut submodule = git_repo
+            .submodule(&submodule_remote_url, Path::new(wit_dir), true)
+            .unwrap();
+
+        let mut checkout_opts = git2::build::CheckoutBuilder::new();
+        checkout_opts.force().use_theirs(true);
+
+        submodule.init(false).unwrap();
+
+        let sub_repo = submodule
+            .clone(Some(
+                git2::SubmoduleUpdateOptions::new()
+                    .allow_fetch(true)
+                    .checkout(checkout_opts),
+            ))
+            .unwrap();
+
+        sub_repo.set_head("refs/heads/main").unwrap();
+
+        // Change the submodule name so that it is always known to the tool no matter which directory was chosen to store the module
+        // 1. In .gitmodules
+        {
+            let mut gitmodules_file = std::fs::OpenOptions::new()
+                .read(true)
+                .open(git_repo.workdir().unwrap().join(".gitmodules"))
+                .unwrap();
+
+            let mut file_contents = String::new();
+            gitmodules_file.read_to_string(&mut file_contents).unwrap();
+            // find and replace the line
+            let pattern_to_replace = format!("[submodule \"{wit_dir}\"]");
+            let mut lines: Vec<String> = file_contents
+                .split('\n')
+                .map(|str| str.to_owned())
+                .collect();
+            let to_modify = lines
+                .iter_mut()
+                .find(|line| line.contains(&pattern_to_replace))
+                .unwrap();
+            *to_modify = format!("[submodule \"{WIT_MODULE_NAME}\"]");
+
+            // reopen and truncate previous contents
+            let mut gitmodules_file = std::fs::OpenOptions::new()
+                .write(true)
+                .truncate(true)
+                .open(git_repo.workdir().unwrap().join(".gitmodules"))
+                .unwrap();
+
+            gitmodules_file
+                .write_all(
+                    // SAFETY: the contents won't be actually changing (no UTF-8 violations), we just need the buffer to be mut
+                    unsafe { lines.join("\n").as_bytes_mut() },
+                )
+                .unwrap();
+        }
+        // 2. In .git/config
+        {
+            let mut config = git_repo.config().unwrap();
+
+            let key_prefix_to_replace = format!("submodule.{wit_dir}");
+            let new_key_prefix = format!("submodule.{WIT_MODULE_NAME}");
+
+            let old_url_key = key_prefix_to_replace.clone() + ".url";
+
+            let old_url_val = {
+                let url_entry = config.get_entry(&old_url_key).unwrap();
+                url_entry.value().unwrap().to_owned()
+            };
+            config.remove(&old_url_key).unwrap();
+
+            config
+                .set_str(&(new_key_prefix.clone() + ".url"), &old_url_val)
+                .unwrap();
+            config
+                .set_str(&(new_key_prefix + ".path"), &wit_dir)
+                .unwrap();
+        }
+        submodule.reload(false).unwrap();
+    }
+
+    // update the branch
+    git_repo
+        .submodule_set_branch(WIT_MODULE_NAME, "main")
         .unwrap();
 
-    submodule.init(false).unwrap();
-    let sub_repo = submodule
-        .clone(Some(git2::SubmoduleUpdateOptions::new().allow_fetch(true)))
-        .unwrap();
-
-    sub_repo.set_head("refs/heads/main").unwrap();
-
-    // Change the submodule name so that it is always known to the tool no matter which directory was chosen to store the module
-    // 1. In .gitmodules
-    {
-        let mut gitmodules_file = std::fs::OpenOptions::new()
-            .read(true)
-            .open(git_repo.workdir().unwrap().join(".gitmodules"))
-            .unwrap();
-
-        let mut file_contents = String::new();
-        gitmodules_file.read_to_string(&mut file_contents).unwrap();
-        // find and replace the line
-        let pattern_to_replace = format!("[submodule \"{wit_dir}\"]");
-        let mut lines: Vec<String> = file_contents
-            .split('\n')
-            .map(|str| str.to_owned())
-            .collect();
-        let to_modify = lines
-            .iter_mut()
-            .find(|line| line.contains(&pattern_to_replace))
-            .unwrap();
-        *to_modify = format!("[submodule \"{WIT_MODULE_NAME}\"]");
-
-        // reopen and truncate previous contents
-        let mut gitmodules_file = std::fs::OpenOptions::new()
-            .write(true)
-            .truncate(true)
-            .open(git_repo.workdir().unwrap().join(".gitmodules"))
-            .unwrap();
-
-        gitmodules_file
-            .write_all(
-                // SAFETY: the contents won't be actually changing (no UTF-8 violations), we just need the buffer to be mut
-                unsafe { lines.join("\n").as_bytes_mut() },
-            )
-            .unwrap();
-    }
-    // 2. In .git/config
-    {
-        let mut config = git_repo.config().unwrap();
-
-        let key_prefix_to_replace = format!("submodule.{wit_dir}");
-        let new_key_prefix = format!("submodule.{WIT_MODULE_NAME}");
-
-        let old_url_key = key_prefix_to_replace.clone() + ".url";
-
-        let old_url_val = {
-            let url_entry = config.get_entry(&old_url_key).unwrap();
-            url_entry.value().unwrap().to_owned()
-        };
-        config.remove(&old_url_key).unwrap();
-
-        config
-            .set_str(&(new_key_prefix.clone() + ".url"), &old_url_val)
-            .unwrap();
-        config
-            .set_str(&(new_key_prefix + ".path"), &wit_dir)
-            .unwrap();
-    }
+    // add the changes to the index of repo containing the submodule
+    let mut submodule = git_repo.find_submodule(WIT_MODULE_NAME).unwrap();
     submodule.add_finalize().unwrap();
 }
 

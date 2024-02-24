@@ -701,3 +701,39 @@ github_octoverse_report_2023:
         title: GitHub blog
         url:
             value: https://github.blog/
+
+kademlia_dht:
+    title: "Kademlia: A Peer-to-Peer Information System Based on the XOR Metric"
+    type: article
+    author:
+        - Maymounkov, Petar
+        - Mazières, David
+    serial-number:
+        isbn: 978-3-540-45748-0
+        doi: 10.1007/3-540-45748-8_5
+    date: 2002-10-10
+    publisher: Springer, Berlin, Heidelberg
+    page-range: 53-65
+    parent:
+        title: Lecture Notes in Computer Science
+        type: book
+        volume: 2429
+        author:
+            - Druschel, Peter
+            - Kaashoek, Frans
+            - Rowstron, Antony
+        publisher: Springer Berlin Heidelberg
+        serial-number:
+            issn: 0302-9743
+
+redb_design:
+    title: redb design
+    type: entry
+    url: 
+        value: https://github.com/cberner/redb/blob/d8be9580591aa063469df6a7faf243d17a5a59a6/docs/design.md
+        date: 2024-02-20
+    author:
+        - Berner, Christopher
+    parent:
+        type: repository
+        title: github.com/cberner/redb

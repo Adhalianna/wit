@@ -1,8 +1,7 @@
 pub mod markdown;
 use axum::http::{header, HeaderMap, StatusCode};
 
-use crate::file_data::FileData;
-use crate::local::StoredFile;
+use crate::file::file_data::FileData;
 
 pub enum RenderedFile {
     Html(String),
@@ -46,8 +45,8 @@ impl axum::response::IntoResponse for RenderError {
     }
 }
 
-pub fn render(file: StoredFile, current_address: &str) -> Result<RenderedFile, RenderError> {
-    match file.take_data() {
+pub fn render(file: FileData, current_address: &str) -> Result<RenderedFile, RenderError> {
+    match file {
         FileData::Binary(_) => todo!(),
         FileData::Markdown(data) => Ok(RenderedFile::Html(markdown::render(
             data.clone(),

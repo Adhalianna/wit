@@ -37,7 +37,8 @@
             [
                 #set align(center + horizon)
                 #if logo_path != none [
-                    #image(logo_path, width: 33%)
+                    #image(logo_path, width: 50%)
+                    #v(-1em)
                 ]
                 #text(weight: 900)[
                     #par()[#smallcaps(university)]

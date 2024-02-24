@@ -30,6 +30,22 @@
   })
 
   // TITLE PAGE
+  
+  // WARN!: this duplicate within code is a Quickfix
+  // TODO: fix this and/or allow some means of adding title pages
+  import "title_page_pl.typ": thesis_title_page as thesis_title_page_pl
+  thesis_title_page_pl(
+    logo_path: university_logo_file,
+    university: "Akademia Górniczo-Hutnicza im. Stanisława Staszica w Krakowie",
+    faculty: "WYDZIAŁ ELEKTROTECHNIKI, AUTOMATYKI, INFORMATYKI I INŻYNIERII BIOMEDYCZNEJ",
+    document_type: [Pojekt dyplomowy],
+    titles: titles,
+    author: author.first_name + " " + author.second_name + if author.at("other_names", default: none) != none { " " + author.other_names } + " " + author.surname,
+    degree_programme: degree_programme,
+    supervisor: supervisor,
+    location: location,
+    date: date,
+  )
   import "title_page.typ": *
   thesis_title_page(
     logo_path: university_logo_file,
@@ -44,39 +60,49 @@
     date: date,
   )
 
+  // Set margins:
   set page(margin: (inside: 3cm, outside: 2cm))
 
   // Stylize headings:
   show heading.where(level: 1): hding => {
-    v(0.6em)
+    v(2.66em, weak: true)
     text(size: 1.5em)[#hding]
-    v(1.2em)
+    v(2.33em, weak: true)
   }
   show heading.where(level: 2): hding => {
-    v(0.3em)
+    v(2em, weak: true)
     text(size: 1.25em)[#hding]
-    v(0.6em)
+    v(1.5em, weak: true)
   }
   show heading.where(level: 3): hding => {
+    v(1.5em, weak: true)
     text(size: 1.1em)[#hding]
-    v(0.33em)
+    v(1.33em, weak: true)
+  }
+  show heading.where(level: 4): hding => {
+    v(1.33em, weak: true)
+    hding
+    v(1.2em, weak: true)
   }
   show heading: set par(justify: false, leading: 1em)
   show heading: set block(spacing: 1em)
   show heading.where(level: 1): set block(spacing: 2em)
-    // Stylize paragraphs
+  // Stylize paragraphs
   set par(justify: true, leading: 1.25em)
   show par: set block(spacing: 2em)
   // Stylize figures
-  set figure(placement: auto, gap: 1.5em)
+  set figure(gap: 1.5em)
   show figure: set par(leading: 1em)
   show figure: set place(clearance: 2em)
+  show figure: set block(breakable: true)
+  // Stylize code/raw blocks
+  show raw.where(block: true): set par(justify: false, linebreaks: "simple")
   // Stylize tables
   set table(inset: 0.66em, columns: (97.5%))
   show table: set par(leading: 0.75em)
   // Stylize lists
   set list(indent: 1.25em)
-    
+
   // ABSTRACTS
   page(header: none, footer: none)[
     #set heading(outlined: false, bookmarked: true)
@@ -85,6 +111,8 @@
     }
     #abstracts
   ]
+  pagebreak()
+  pagebreak()
 
   // Default styling of content pages:
   set page(
@@ -192,9 +220,8 @@
 
   // empty page
   pagebreak()
-  pagebreak()
 
-   // ACKNOWLEDGEMENTS
+  // ACKNOWLEDGEMENTS
   if acknowledgement != none {
     align(right + bottom)[
       #grid(columns: (75%), [
@@ -225,23 +252,61 @@
       pagebreak(weak: true)
       align(top + left)[#hding]
     }
-    // add pagebreak after content under heading level 1 and before heading level 2
+
+    // Skip outlining headers which are "alone" at their depth.
+    // Require at least two headings at a given depth to get them outlined.
+    // ... for some reason this doesn't actually work despite detecting
+    // correctly "lone" headings.
     #show heading: hding => {
-      locate(
-        loc => {
-          let any_previous_headings_below_h1 = query(selector(heading)
-          .before(loc, inclusive: false)
-          .after(query(
-            heading.where(level: 1, outlined: true).before(loc, inclusive: false),
-            loc,
-          ).last().location(), inclusive: false), loc)
-          if any_previous_headings_below_h1.len() == 1 {
-            pagebreak()
+      let hding_func = hding.func()
+      let loc = hding.location()
+
+      let counter_elements = counter(heading).at(loc)
+
+      if counter_elements.last() == 1 {
+        let depth_level = counter_elements.len()
+
+        let headings_at_same_level = query(heading.where(level: depth_level).after(loc), loc)
+
+        if headings_at_same_level.len() != 0 {
+          let next_at_same_level = headings_at_same_level.first()
+          let next_counter = counter(heading).at(next_at_same_level.location())
+
+          if next_counter.last() != 2 {
+            set heading(outlined: false)
+            hding
+          } else {
+            set heading(outlined: true)
+            hding
           }
+        } else {
+          set heading(outlined: false)
           hding
-        },
-      )
+        }
+      } else {
+        set heading(outlined: true)
+        hding
+      }
     }
+
+    //// add pagebreak after content under heading level 1 and before heading level 2
+    //#show heading: hding => {
+    //  locate(
+    //    loc => {
+    //      let any_previous_headings_below_h1 = query(selector(heading)
+    //      .before(loc, inclusive: false)
+    //      .after(query(
+    //        heading.where(level: 1, outlined: true).before(loc, inclusive: false),
+    //        loc,
+    //      ).last().location(), inclusive: false), loc)
+    //      if any_previous_headings_below_h1.len() == 1 {
+    //        pagebreak()
+    //      }
+    //      hding
+    //    },
+    //  )
+    //}
+
     #content
     #pagebreak(weak: true)
   ]

@@ -1,8 +1,8 @@
-use git2::Repository;
 use std::ops::Deref;
 
-pub mod file;
-pub use file::StoredFile;
+use git2::Repository;
+
+use crate::file::local::StoredFile;
 
 const MAIN_REF: &'static str = "refs/main/HEAD";
 

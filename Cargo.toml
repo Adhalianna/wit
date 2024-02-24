@@ -10,11 +10,12 @@ readme = "README.md"
 git2 = { version = "0.18.1" }
 clap = { version = "4.4.3", features = ["derive"] }
 serde = { version = "1.0.190", features = ["derive"] }
+serde_json = { version = "1.0.114" }
 toml = { version = "0.8.6" }
 uuid = { version = "1.5.0", featuers = ["v4", "serde", "rng"] }
 thiserror = { version = "1.0.50" }
 tokio = { version = "1.35.1", features = ["rt-multi-thread", "net"] }
 url = { version = "2.3.0", features = ["serde"] }
-reqwest = { version = "0.11.22", features = ["rustls-tls"] }
+reqwest = { version = "0.11.22", features = ["rustls-tls", "json"] }
 tracing = { version = "0.1.40" }
 tracing-subscriber = { version = "0.3.18", features = ["fmt", "env-filter", "json"] }

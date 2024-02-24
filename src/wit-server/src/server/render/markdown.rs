@@ -20,7 +20,7 @@ impl InlineRule for AutolinkWitLinkScanner {
             return None;
         };
         let url = match WitLink::from_url(input) {
-            Ok(wit_link) => wit_link.to_http(crate::server::link::CURRENT_HOST.get().unwrap()),
+            Ok(wit_link) => wit_link.to_http(),
             Err(_) => input.to_owned(),
         };
         Some((
@@ -34,7 +34,7 @@ fn translate_wit_links_full(url: Option<String>, title: Option<String>) -> Node 
     if let Some(url) = url {
         if let Ok(wit_link) = WitLink::from_url(&url) {
             Node::new(markdown_it::plugins::cmark::inline::link::Link {
-                url: wit_link.to_http(crate::server::link::CURRENT_HOST.get().unwrap()),
+                url: wit_link.to_http(),
                 title,
             })
         } else {
@@ -49,8 +49,6 @@ pub fn render(
     data: Vec<u8>,
     current_wiki_host: &str,
 ) -> Result<String, crate::server::render::RenderError> {
-    crate::server::link::CURRENT_HOST.get_or_init(|| current_wiki_host.to_owned());
-
     let renderer = MARKDOWN_RENDERER.get_or_init(|| {
         let mut md = MarkdownIt::new();
         markdown_it::plugins::cmark::add(&mut md);

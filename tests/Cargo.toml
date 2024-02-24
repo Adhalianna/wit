@@ -6,9 +6,8 @@ edition = "2021"
 publish = false
 
 [dev-dependencies]
-wit-cli = { path = "../src/wit-cli" }
-wit-server = { path = "../src/wit-server" }
 reqwest = { workspace = true, features = ["blocking"] }
+wit-server = { path = "../src/wit-server" }
 
 [dependencies]
 git2 = { workspace = true }

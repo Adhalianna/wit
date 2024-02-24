@@ -1,9 +1,6 @@
 use std::time::Duration;
 
-use common::{
-    init_git_repo, new_test_client_repo_path, ClientRepositoryWithWiki, InitializedTestServer,
-    TEST_INIT,
-};
+use common::{add_new_peer_to, ClientRepositoryWithWiki, InitializedTestServer, TEST_INIT};
 
 #[test]
 pub fn client_connects_to_remote_repo() {
@@ -23,7 +20,6 @@ pub fn server_responds_with_local_files() {
 
     let mut client = ClientRepositoryWithWiki::new(server.git_url());
     client.commit_push_txt_file("empty.md", None, "test commit");
-    let client_path = new_test_client_repo_path();
 
     std::thread::sleep(Duration::from_millis(1000));
 
@@ -80,4 +76,18 @@ pub fn server_renders_markdown_files_and_translates_wit_links() {
         response.text().unwrap(),
         format!("<h1 id=\"welcome-\">Welcome!</h1>\n<p>checkout <a href=\"{}/test.txt\">this link</a>!</p>\n", server.http_url())
     )
+}
+
+#[test]
+pub fn server_adds_an_address_to_configuration() {
+    TEST_INIT();
+
+    let server = InitializedTestServer::new().run();
+    add_new_peer_to(server.storage_path(), "/dns4/example.org");
+
+    let config = wit_server::read_config_file(server.storage_path()).unwrap();
+    assert_eq!(
+        config.peers().first().unwrap().to_string(),
+        "/dns4/example.org"
+    );
 }

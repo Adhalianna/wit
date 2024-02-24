@@ -1,3 +1,4 @@
+use core::panic;
 use std::{fs, path::Path};
 
 static INIT: std::sync::Once = std::sync::Once::new();
@@ -90,7 +91,8 @@ impl InitializedTestServer {
         // as library, using the cli feels more appropiate.
         let storage_path = new_test_server_path();
         let mut cmd = std::process::Command::new("cargo");
-        cmd.arg("run")
+        let res = cmd
+            .arg("run")
             .arg("--quiet")
             .args(["--package", "wit-server"])
             .arg("--")
@@ -102,6 +104,7 @@ impl InitializedTestServer {
             .arg("-n") // short for --do-not-run
             .output()
             .unwrap();
+        assert!(res.status.success());
         Self { storage_path }
     }
     pub fn storage_path(&self) -> &str {
@@ -153,4 +156,23 @@ impl Drop for RunningTestServer {
     fn drop(&mut self) {
         self.process.kill().unwrap();
     }
+}
+
+pub fn add_new_peer_to(storage_path: &str, peer: &str) {
+    let mut cmd = std::process::Command::new("cargo");
+    let res = cmd
+        .arg("run")
+        .arg("--quiet")
+        .args(["--package", "wit-server"])
+        .arg("--")
+        // the server command params:
+        .arg("connect")
+        .args(["-s", storage_path])
+        .arg(peer)
+        .output()
+        .unwrap();
+    if !res.status.success() {
+        let err = String::from_utf8(res.stderr).unwrap();
+        panic!("{}", err);
+    };
 }
