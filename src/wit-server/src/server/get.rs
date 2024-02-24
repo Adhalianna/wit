@@ -4,9 +4,10 @@ use axum::{
     extract::{Path, State},
     response::IntoResponse,
 };
+use http::StatusCode;
 use libp2p::futures::TryFutureExt;
 
-#[tracing::instrument(level = tracing::Level::INFO, name = "handling GET request", err, skip(server_state))]
+#[tracing::instrument(level = tracing::Level::INFO, name = "handling GET request", err(Debug), ret(level = tracing::Level::DEBUG, Debug), skip(server_state))]
 pub async fn get(
     Path(file_path): Path<String>,
     State(mut server_state): State<ServerState>,
@@ -22,9 +23,11 @@ pub async fn get(
                     version: "0".to_owned(),
                 })
                 .await;
-            unimplemented!()
+
+            //unimplemented!()
+            return Err((StatusCode::NOT_FOUND, "no such file on the local server"));
         }
     };
 
-    crate::server::render(file, &server_state.address)
+    Ok(crate::server::render(file, &server_state.address))
 }

@@ -52,7 +52,7 @@ pub fn new_s2s_network(
 }
 
 #[derive(libp2p::swarm::NetworkBehaviour)]
-struct Behaviour {
+pub struct Behaviour {
     kademlia: libp2p::kad::Behaviour<RedbStorage>,
     req_resp: libp2p::request_response::cbor::Behaviour<FileAndVer, RemoteFile>,
 }

@@ -90,7 +90,7 @@ pub fn execute_async_context(
             let tcp_listener = tokio::net::TcpListener::bind(tcp_address).await.unwrap();
 
             tokio::spawn(p2p_event_loop.run());
-            axum::serve(tcp_listener, api_router).await.unwrap();
+            axum::serve(tcp_listener, api_router).await.unwrap()
         })
 }
 

@@ -13,11 +13,8 @@
 
 // ------ GLOBAL STYLE ------
 #set text(
-  size: 12pt, fallback: true, lang: "en", region: "GB",
-  slashed-zero: true, font: (
-    "Times New Roman", "Times", "Liberation Serif", "Linux Libertine",
-    "serif", "sans-serif", "Courier New", "Courier",
-    "Source Code Pro", "monospace",
+  size: 12pt, fallback: true, lang: "en", region: "GB", slashed-zero: true, font: (
+    "Times New Roman", "Times", "Liberation Serif", "Linux Libertine", "serif", "sans-serif", "Courier New", "Courier", "Source Code Pro", "monospace",
   ),
 )
 // personal preferred style for code blocks:
@@ -85,12 +82,13 @@
   if type(header) == none or header == none {
     li
   } else if type(header) == content {
-    grid(rows: (auto, auto), {
-      rect(
-        inset: 0.66em, fill: luma(240), stroke: 1pt, width: 100%,
-        strong(header),
-      )
-    }, li)
+    grid(
+      rows: (auto, auto), {
+        rect(
+          inset: 0.66em, fill: luma(240), stroke: 1pt, width: 100%, strong(header),
+        )
+      }, li,
+    )
   } else {
     panic(
       "expected the header argument to be of type content, got: " + type(header),
@@ -216,12 +214,58 @@ pub fn server_adds_an_address_to_configuration() {
 }
 ```
 
+#let snippet_7 = ```sh
+# To execute the server binary
+cargo run --package wit-server
+# To learn more about available parameters
+cargo run --package wit-server -- --help
+# To use execute the server at a different directory than the working directory
+cargo run --package wit-server -- -s my_directory/server
+# To initialize the server and run it
+cargo run --package wit-server -- init
+# To initialize the server storage without running it
+cargo run --package wit-server -- init -n
+# To launch server binding it to an address different than localhost:3000
+cargo run --package wit-server -- -a 0.0.0.0:4000
+```
+
+#let snippet_8 = ```md
+<!-- tmp/test/repos/repository122/welcome.md -->
+
+# Welcome!
+checkout [this link](wit:test.txt)!
+```
+
+#let snippet_9 = ```toml
+# tmp/test/servers/server251/WitConfig.toml
+
+id = "4ff373304d6a4b54a340c8a2b2c1db97"
+private_p2p_key = "qGpQw9PW9+WvGL9Ow64mGuu+e7I7gsm1vW+eX8jaggc="
+public_p2p_key = "EkHwSZM4t1GcyZHN1IUy2p818BOBwSo044m1WqRK/iM="
+peers = []
+```
+
+#let snippet_10 = ```md
+# Welcome!
+To see what groceries need to be done check [this link](wit:list.md).
+```
+
+#let snippet_11 = ```md
+# Veggies
+
+- 3 small carrots
+- 1 beetroot
+- 2 potatoes
+
+# Fruits
+
+- 5 apples
+- 6 bananas
+```
+
 // ------ CONTENT ------
 #diploma(
-  university_logo_file: "AGH.svg", university: "AGH University of Krakow", faculty: "Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical Engineering",
-  titles: (paper_title, pl_paper_title), short_title: "Distributed Wiki on top of Git",
-  author: (first_name: "Natalia", second_name: "Kinga", surname: "Goc"), degree_programme: "Computer Science",
-  supervisor: "dr. inż. Krzysztof Kluza", location: "Kraków", acknowledgement: [
+  university_logo_file: "AGH.svg", university: "AGH University of Krakow", faculty: "Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical Engineering", titles: (paper_title, pl_paper_title), short_title: "Distributed Wiki on top of Git", author: (first_name: "Natalia", second_name: "Kinga", surname: "Goc"), degree_programme: "Computer Science", supervisor: "dr. inż. Krzysztof Kluza", location: "Kraków", acknowledgement: [
     I would love to say 'Thank you' to anyone who keeps making and promoting free
     and open source software, plenty of which I have used to write this paper.
   ], abstracts: [
@@ -251,8 +295,7 @@ pub fn server_adds_an_address_to_configuration() {
     wymaga rozwiązania unikalnych dla niego problemów, których omówienie zawarto w
     pracy. Ponadto dokumentuje ona implementację oprogramowania, której rozwój
     doprowadził do odkrycia opisanych trudności.
-  ],
-  bibliography_file: "bibliography.yml",
+  ], bibliography_file: "bibliography.yml",
 )[
 
 = Introduction
@@ -465,8 +508,7 @@ non-functional requirements.
       repository as the code will reduce the burden of a context switch between source
       code and documentation. They plan to achieve that by keeping the wiki files in a
       subdirectory of their source code repository.
-    ],
-    [
+    ], [
       The freshly employed engineer wants to be able to browse the wiki in a graphical
       form. It is important to them that the pages are presentable because it makes
       learning from them a much more pleasant experience. They plan to browse the
@@ -540,32 +582,27 @@ implemented in an application that would be a Minimal Viable Product (MVP).
       HTML pages which can be displayed by the following web browsers: Firefox v122.0,
       Microsoft Edge v121.0.2277.83, Google Chrome v121.0.6167.85, Chromium
       v121.0.6167.135.], [Files in binary formats should be served to the browser _as is_ with correct
-      MIME type specified in the Content-Type header.],
-    [Pages and content can be made secret or not to other wikis invloved in
+      MIME type specified in the Content-Type header.], [Pages and content can be made secret or not to other wikis invloved in
       collaboration], [A single wiki server can become connected to other wiki servers through an
       access to that server's machine. When wikis are connected they create a network
-      and hyperlinks can be created between non-secret pages stored at those wikis.],
-    [A page that is not secret should be available for browsing through other
+      and hyperlinks can be created between non-secret pages stored at those wikis.], [A page that is not secret should be available for browsing through other
       connected wiki servers.], [A wiki editor (a user editing a wiki) should be able to select a specific
       version of wiki content to edit through interaction with a git repository cloned
       from the wiki server], [The wiki and the files available from a single server should be available for
       editing from a sub-directory within an arbitrary git repository.], [Changing version of the currently managed by a user content should be possible
       through an interaction with the git repository, in which sub-directory the wiki
       files are stored, in such a manner that the reversion of the git repository is
-      always connected with a specific version of the wiki content],
-    [A user browsing the wiki through a web browser should not be required to be
-      aware of the fact that the files might be hosted on multiple wiki servers.],
-    [The application must support within files links in a dedicated scheme which
+      always connected with a specific version of the wiki content], [A user browsing the wiki through a web browser should not be required to be
+      aware of the fact that the files might be hosted on multiple wiki servers.], [The application must support within files links in a dedicated scheme which
       point to a page through selection of:
       - a specific wiki server,
       - a wiki revision,
       - a file path.], [Revisions of a wiki should be uniquely identifiable with uniqness maintained
-      between different servers. The identificator must be usable in URLs.], [The server software should produce log lines printed to the standard output.],
-    [The server software should double as a host for the git repository storing the
+      between different servers. The identificator must be usable in URLs.], [The server software should produce log lines printed to the standard output.], [The server software should double as a host for the git repository storing the
       wiki files and offer the access through its HTTP interface using a single port
-      for all its operations.], [The server should support verifying existence of link targets (link integrity)
-      through an HTTP API.], [A CLI client application with an interface similar to git should be provided.],
-    [A CLI client should be capable of initializing a submodule storing wiki files in
+      for all its operations.], [The server should support running it under an IP address selected by the user
+      and error if it cannot attach itself to it], [The server should support verifying existence of link targets (link integrity)
+      through an HTTP API.], [A CLI client application with an interface similar to git should be provided.], [A CLI client should be capable of initializing a submodule storing wiki files in
       a git repository.],
   ), caption: [
     A list of functional requirements for the software.
@@ -577,9 +614,7 @@ implemented in an application that would be a Minimal Viable Product (MVP).
     header: [Non-functional Requirements], [The wiki files cannot be copied between servers and exist at any point in
       operating memory of other wikis unless explicitly marked as not secret.], [Terminating the wiki server process manually or due to a hosting hardware
       failure must not cause a failure of other connected wiki servers.], [The software must be executable on a Linux system with kernel v6.6.3 and libgit2
-      library v1.7.1 installed.],
-    [The executable should not allow multiple processes to run in a single directory.],
-    [The server should store its configuration in a TOML file.],
+      library v1.7.1 installed.], [The executable should not allow multiple processes to run in a single directory.], [The server should store its configuration in a TOML file.],
   ), caption: [
     A list of non-functional requirements for the software.
   ],
@@ -808,27 +843,23 @@ expect based on their experience with `git log` command.
 
 #figure(
   table(
-    columns: (1fr, 1fr), rows: (auto, auto), gutter: 0pt, inset: (left: 0em, rest: 1em),
-    align: left, {
+    columns: (1fr, 1fr), rows: (auto, auto), gutter: 0pt, inset: (left: 0em, rest: 1em), align: left, {
       v(-1em)
       box(
-        width: 100%, fill: luma(240), outset: (right: 1em - 0.5pt), inset: 1em,
-        "Advantages",
+        width: 100%, fill: luma(240), outset: (right: 1em - 0.5pt), inset: 1em, "Advantages",
       )
       v(-1em)
     }, {
       v(-1em)
       box(
-        width: 100%, fill: luma(240), outset: (right: 1em - 0.5pt), inset: 1em,
-        "Disadvantages",
+        width: 100%, fill: luma(240), outset: (right: 1em - 0.5pt), inset: 1em, "Disadvantages",
       )
       v(-1em)
     }, [
       - Provides a platform for sharing data with peers which could facilitate future
         developement.
       - Builds on a well-researched and described protocol. #hide(lorem(10))
-    ],
-    [
+    ], [
       - It takes as much as up to two request-response exchanges over the network for
         each URI that needs resolving.
       - Assmebling a view into the whole history of changes requires further work on the
@@ -885,8 +916,7 @@ different shape.
 
 #figure(
   block(
-    fill: luma(240), inset: 1em, breakable: false, stroke: black + 1pt,
-    align(
+    fill: luma(240), inset: 1em, breakable: false, stroke: black + 1pt, align(
       left, tree-list(
         marker-font: "Noto Sans Mono",
       )[
@@ -914,13 +944,13 @@ expressed in the snippet present on @fig_router_src.
 
 #let src = raw(
   "let router = axum::Router::new()
-       .route(\"/favicon.ico\", axum::routing::any(|| async { \"not set\" }))
-       .route(\"/git\", git_proxy::new_proxy(\"/git\")) // CGI proxy
-       .route(\"/git/*path\", git_proxy::new_proxy(\"/git/\")) // CGI proxy
-       .route(\"/@:version/:file_path\", axum::routing::get(get::get_versioned))
-       .route(\"/:file_path\", axum::routing::get(get::get))
-       .with_state(state);
-       ", block: true, lang: "rs",
+                 .route(\"/favicon.ico\", axum::routing::any(|| async { \"not set\" }))
+                 .route(\"/git\", git_proxy::new_proxy(\"/git\")) // CGI proxy
+                 .route(\"/git/*path\", git_proxy::new_proxy(\"/git/\")) // CGI proxy
+                 .route(\"/@:version/:file_path\", axum::routing::get(get::get_versioned))
+                 .route(\"/:file_path\", axum::routing::get(get::get))
+                 .with_state(state);
+                 ", block: true, lang: "rs",
 )
 
 #figure(src, caption: [
@@ -1054,14 +1084,140 @@ capability.
   ],
 ) <fig_test_6>
 
-= Summary <summary-chapter>
+== Running the Target Binaries
 
-The project introduces constraints that require novel solutions. Because of this
-novelty, only a subsection of the requirements has been implemented during the
-research period. Further work is necessary to move the implementation to a
-complete proof-of-concept but the architecture of the application is not
-expected to change significantly. The current selection of external packages is
-expected to facilitate the implementation of most of the missing capabilities.
+The recommended way of launching the executables compiled from the attached
+source code is through ```sh cargo run``` command. Because multiple binary
+crates can exist within a single workspace, explicitly selecting the server
+crate named `wit-server` is advised. @fig_cargo_run_examples presents example
+commands that can be utilised to launch the server with Cargo.
+
+#figure(
+  snippet_7, caption: [
+    A snippet presenting some of the available ways through which the server can be
+    launched. Line 4 includes a command through which one can learn more about the
+    available command line parameters.
+  ],
+) <fig_cargo_run_examples>
+
+Since the artefacts created through integration tests get cleared at test
+initialization, they can be investigated after any test run. Executing the
+server at one of the generated directories one can use a preferred web browser
+to access the files defined in the tests. @fig_browser_screenshot presents the
+results of a scenario defined in @fig_test_4.
+
+#figure(
+  rect(stroke: luma(240) + 1.5pt, image("img/browser-screenshot.png")), caption: [
+    A file generated by test presented by @fig_test_4 servered by the #wit server
+    and accessed through the Firefox Browser.
+  ],
+) <fig_browser_screenshot>
+
+#figure(
+  rect(stroke: luma(240) + 1.5pt, image("img/terminal-logs-screenshot.png")), caption: [
+  Log lines at verbosity level set to `debug` produced by an execution scenario
+  mimicking that of a test presented by @fig_test_4.
+  ],
+) <fig_log_lines_screenshot>
+
+The server during its execution writes to the standard output log lines which
+verbosity can be controlled by an environment variable named `RUST_LOG`. Usage
+of this specific variable is common for Rust programs as it is a default
+behaviour for the `tracing-subscriber` @tracing_subscriber_docs crate which can
+be used to implement logging facilities. The behaviour is outlined in the
+documentation of its `EnvFilter` structure @tracing_env_logger_docs.
+@fig_log_lines_screenshot presents debug-level log lines resulting from starting
+the server and using a web browser to display a file as in
+@fig_browser_screenshot.
+
+Unless the `RUST_LOG` environment variable is set the verbosity level defaults
+to `error`. Messages at this level can be obtained for example by attempting to
+access a non-existing file as shown at @fig_not_found_screenshot. The resulting
+lines can be found on @fig_log_lines_error_screenshot.
+
+#figure(
+  rect(
+    stroke: luma(240) + 1.5pt, image("img/browser-not-found-screenshot.png"),
+  ), caption: [
+    A screenshot of an attempt at accessing a file not available from the server.
+  ],
+) <fig_not_found_screenshot>
+
+#figure(
+  rect(
+    stroke: luma(240) + 1.5pt, image("img/terminal-logs-error-screenshot.png"),
+  ), caption: [
+    Log lines produced during an attempt to access a non-existing file.
+  ],
+) <fig_log_lines_error_screenshot>
+
+Although only integration tests have access to the functionality designed for
+the CLI client application, git can also be used within the #wit submodule to
+make changes to the wiki contents. Assuming structure as presented at
+@fig_client_and_server_files, one can execute git commands as visible on
+@fig_committing_to_wiki to commit files and achieve results as presented at
+@fig_committed_and_accessed.
+
+#pagebreak(weak: true)
+
+#figure(
+  {
+    let client_files = table(
+      columns: (1fr, 4fr), rows: (13.7%), inset: 0pt, image("img/minimal-client-repo-tree.png"), {
+        set block(height: 100%)
+        snippet_8
+      },
+    )
+    let server_files = table(
+      columns: (1.61fr, 4fr), inset: 0pt, rows: 28%, image("img/server-files-screenshot.png"), {
+        set block(height: 100%)
+        snippet_9
+      },
+    )
+
+    set block(breakable: false)
+    table(
+      columns: 1, inset: 0pt, stroke: 2pt, rect(
+        width: 100%, fill: luma(210), [*Files at the git repository managed by #wit server*],
+      ), server_files, rect(
+        width: 100%, fill: luma(210), [*Files at a "client" git repository connected to #wit*],
+      ), client_files,
+    )
+  }, caption: [
+    Contents of directories created as an artifact of one of the integration tests.
+  ],
+) <fig_client_and_server_files>
+
+#figure(
+  table(
+    columns: 1, rows: (15%, 19%), inset: 0pt, {
+      set block(height: 100%, stroke: 1pt + black)
+      grid(
+        columns: 2, snippet_10, image("img/browser-committed-welcome-screenshot.png"),
+      )
+    }, {
+      set block(height: 100%, stroke: 1pt + black)
+      grid(
+        columns: 2, snippet_11, image("img/browser-committed-list-screenshot.png"),
+      )
+    },
+  ), caption: [
+    Files committed to the submodule (on the left) and accessed through the #wit server
+    and a browser (on the right).
+  ],
+) <fig_committed_and_accessed>
+
+#figure(
+  rect(
+    stroke: luma(240) + 1.5pt, width: 70%, image("img/committing-to-wiki-screenshot.png"),
+  ), caption: [
+    Screenshot of terminal emulator presenting executed git commands. The operations
+    performed at the directory storing the submodule containing wiki files result in
+    committing new files to the #wit server.
+  ],
+) <fig_committing_to_wiki>
+
+= Summary <summary-chapter>
 
 The project introduces constraints that require novel solutions. Because of this
 novelty, only a subsection of the requirements has been implemented during the
@@ -1089,8 +1245,6 @@ involving users from the target audience of the application. It is expected that
 new features would need an introduction to make the experience of working with
 an application comfortable enough to be acceptable to its users. Especially the
 potential to enrich the HTML presentation of stored files remains uncharted.
-
-#pagebreak(weak: true)
 
 To make the application usable in a professional environment its security
 promises should be revised and verified. In its current design #wit assumes that

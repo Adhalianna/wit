@@ -1,6 +1,6 @@
 [workspace]
 members = ["src/*", "tests"]
-default-members = ["src/wit-cli", "tests"]
+default-members = ["src/wit-server", "tests"]
 resolver = "2"
 
 [workspace.package]

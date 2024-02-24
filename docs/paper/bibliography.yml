@@ -737,3 +737,25 @@ redb_design:
     parent:
         type: repository
         title: github.com/cberner/redb
+
+tracing_subscriber_docs:
+  title: tracing_subscriber
+  type: reference
+  url: 
+    value: https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/index.html
+    date: 2024-02-24
+  parent:
+    type: web
+    title: Docs.rs
+    url: https://docs.rs/
+
+tracing_env_logger_docs:
+  title: "EnvFilter in tracing_subscriber::filter"
+  type: reference
+  url:
+    value: https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/filter/struct.EnvFilter.html
+    date: 2024-02-24
+  parent:
+    type: web
+    title: Docs.rs
+    url: https://docs.rs/

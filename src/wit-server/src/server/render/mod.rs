@@ -3,6 +3,7 @@ use axum::http::{header, HeaderMap, StatusCode};
 
 use crate::file::file_data::FileData;
 
+#[derive(Debug)]
 pub enum RenderedFile {
     Html(String),
     Binary { bytes: Vec<u8>, content: String },
