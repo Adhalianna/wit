@@ -891,7 +891,7 @@ implementation of this property.
 #import "@preview/treet:0.1.0": *
 #figure(
   block(
-    fill: luma(240), inset: 1em, stroke: black + 1pt, align(left, tree-list(marker-font: "Noto Sans Mono")[
+    inset: 1em, stroke: luma(200) + 1pt, align(left, tree-list(marker-font: "Noto Sans Mono")[
       - version identifier
         - file name
           - linked file url with version identifier encoded
@@ -916,7 +916,7 @@ different shape.
 
 #figure(
   block(
-    fill: luma(240), inset: 1em, breakable: false, stroke: black + 1pt, align(
+    inset: 1em, breakable: false, stroke: luma(200) + 1pt, align(
       left, tree-list(
         marker-font: "Noto Sans Mono",
       )[
@@ -944,13 +944,12 @@ expressed in the snippet present on @fig_router_src.
 
 #let src = raw(
   "let router = axum::Router::new()
-                 .route(\"/favicon.ico\", axum::routing::any(|| async { \"not set\" }))
-                 .route(\"/git\", git_proxy::new_proxy(\"/git\")) // CGI proxy
-                 .route(\"/git/*path\", git_proxy::new_proxy(\"/git/\")) // CGI proxy
-                 .route(\"/@:version/:file_path\", axum::routing::get(get::get_versioned))
-                 .route(\"/:file_path\", axum::routing::get(get::get))
-                 .with_state(state);
-                 ", block: true, lang: "rs",
+    .route(\"/favicon.ico\", axum::routing::any(|| async { \"not set\" }))
+    .route(\"/git\", git_proxy::new_proxy(\"/git\")) // CGI proxy
+    .route(\"/git/*path\", git_proxy::new_proxy(\"/git/\")) // CGI proxy
+    .route(\"/@:version/:file_path\", axum::routing::get(get::get_versioned))
+    .route(\"/:file_path\", axum::routing::get(get::get))
+    .with_state(state);", block: true, lang: "rs",
 )
 
 #figure(src, caption: [
@@ -967,6 +966,108 @@ configurable through the server's configuration file.
 
 This sections describes the results of work on the implementation of the
 application. The results of research done are discussed in @summary-chapter.
+
+== Source Code Organization
+
+The project has been implemented as a Cargo workspace with 3 primary packages:
+- `wit-cli` -- intended for development of the CLI client application. The project
+  has not led to the creation of any content within this crate.
+- `wit-client` -- a library intended for the development of client applications.
+  Most of its offered functionality are wrappers around libgit2.
+- `wit-server` -- the server package containing a binary crate with a library
+  exposing some symbols used to implement the server.
+Besides those 3 packages, the workspace contains a crate producing integration
+tests. @fig_source_code_tree provides a high-level overview of the repository.
+
+The source code of `wit-client` is contained within a single file, `wit-server` on
+the other hand has been organised into multiple modules.
+@fig_server_modules_tree presents the hierarchy of those modules. It is worth
+noting that the module hierarchy of Rust programs typically reflects that of the
+file hierarchy but there are some differences between the directory tree and the
+modules tree. One can learn about those from chapter 7 of "The Rust Programming
+Language" book @the_rust_book_ch_7.
+
+While it is possible to test and build all the crates within the workspace
+relying only on Cargo, the repository includes also a `justfile`. The file is a
+collection of scripts, called recipes, executable through `just` -- a command
+runner inspired by `make`. They are intended to improve the developer experience
+by providing recommended parameters and environment variables to Cargo's
+commands. A single recipe is dedicated to the compilation of this document and
+it requires a typst language compiler and a d2 language compiler. Furthermore,
+all recipes depend on a POSIX shell.
+
+#figure(
+  {
+    set text(size: 9pt)
+    set par(leading: 0.6em)
+    block(
+      inset: 1em, breakable: false, stroke: luma(200) + 1pt, align(left, tree-list(marker-font: "Noto Sans Mono")[
+        - docs/
+          - paper/
+        - src/
+          - wit-cli/
+            - src/
+            - Cargo.toml
+          - wit-client/
+            - src/
+            - Cargo.toml
+          - wit-server/
+            - src/
+            - Cargo.toml
+        - tests/
+          - Cargo.toml
+        - Cargo.toml
+        - README.md
+        - justfile
+      ]),
+    )
+  }, caption: [
+  A partial tree of the source code repository highlighting the workspace
+  structure. Each `Cargo.toml` marks a separate package or workspace manifest.
+  Files containing the Rust code and files used to compile this document are
+  omitted.
+  ],
+) <fig_source_code_tree>
+
+#figure(
+  {
+    set par(leading: 0.66em)
+    show raw.where(block: false): r => {
+      [ #text(fill: blue, strong(r)): ]
+    }
+    block(
+      inset: 1em, breakable: false, stroke: luma(200) + 1pt, align(
+        left, tree-list(
+          marker-font: "Noto Sans Mono",
+        )[
+        - `crate` the entrypoint of the package, the main.rs or lib.rs file.
+          - `file` a representation of a file stored on the wiki.
+            - `file_data` text or binary contents of a file.
+            - `local` a file available to the server locally.
+            - `remote` a file obtained from a remote server.
+          - `git_storage` utilities simplifying usage of a git repository as a file storage.
+          - `server` definition of the HTTP server.
+            - `link` hyperlinks in supported schemes.
+            - `p2p` modules controlling the peer-to-peer network of servers.
+              - `kad_client` an abstraction for making requests over Kademlia.
+              - `kad_store` an implementation of a DHT storage based on redb.
+              - `tables` types and implementation related to the DHT storage scheme.
+            - `render` a collection of renderers parsing specific file types to HTML.
+              - `markdown` a renderer for Markdown files.
+            - `get` HTTP GET method handlers.
+            - `git_proxy` CGI implementation for git.
+          - `version` types related to version identication within the wiki.
+          - `config` configuration scheme and utilities for the server software.
+          - `init` implementation of the init command building server storage files.
+
+        ],
+      ),
+    )
+  }, caption: [
+  A hierarchy of modules within the `wit-server` package with a very brief
+  description of each module.
+  ],
+) <fig_server_modules_tree>
 
 == Integration Tests
 
@@ -1107,14 +1208,14 @@ to access the files defined in the tests. @fig_browser_screenshot presents the
 results of a scenario defined in @fig_test_4.
 
 #figure(
-  rect(stroke: luma(240) + 1.5pt, image("img/browser-screenshot.png")), caption: [
+  rect(stroke: luma(200) + 1pt, image("img/browser-screenshot.png")), caption: [
     A file generated by test presented by @fig_test_4 servered by the #wit server
     and accessed through the Firefox Browser.
   ],
 ) <fig_browser_screenshot>
 
 #figure(
-  rect(stroke: luma(240) + 1.5pt, image("img/terminal-logs-screenshot.png")), caption: [
+  rect(stroke: luma(200) + 1pt, image("img/terminal-logs-screenshot.png")), caption: [
   Log lines at verbosity level set to `debug` produced by an execution scenario
   mimicking that of a test presented by @fig_test_4.
   ],
@@ -1136,16 +1237,14 @@ access a non-existing file as shown at @fig_not_found_screenshot. The resulting
 lines can be found on @fig_log_lines_error_screenshot.
 
 #figure(
-  rect(
-    stroke: luma(240) + 1.5pt, image("img/browser-not-found-screenshot.png"),
-  ), caption: [
+  rect(stroke: luma(200) + 1pt, image("img/browser-not-found-screenshot.png")), caption: [
     A screenshot of an attempt at accessing a file not available from the server.
   ],
 ) <fig_not_found_screenshot>
 
 #figure(
   rect(
-    stroke: luma(240) + 1.5pt, image("img/terminal-logs-error-screenshot.png"),
+    stroke: luma(200) + 1pt, image("img/terminal-logs-error-screenshot.png"),
   ), caption: [
     Log lines produced during an attempt to access a non-existing file.
   ],
@@ -1157,8 +1256,6 @@ make changes to the wiki contents. Assuming structure as presented at
 @fig_client_and_server_files, one can execute git commands as visible on
 @fig_committing_to_wiki to commit files and achieve results as presented at
 @fig_committed_and_accessed.
-
-#pagebreak(weak: true)
 
 #figure(
   {
@@ -1188,6 +1285,8 @@ make changes to the wiki contents. Assuming structure as presented at
   ],
 ) <fig_client_and_server_files>
 
+#pagebreak(weak: true)
+
 #figure(
   table(
     columns: 1, rows: (15%, 19%), inset: 0pt, {
@@ -1209,7 +1308,7 @@ make changes to the wiki contents. Assuming structure as presented at
 
 #figure(
   rect(
-    stroke: luma(240) + 1.5pt, width: 70%, image("img/committing-to-wiki-screenshot.png"),
+    stroke: luma(200) + 1pt, width: 70%, image("img/committing-to-wiki-screenshot.png"),
   ), caption: [
     Screenshot of terminal emulator presenting executed git commands. The operations
     performed at the directory storing the submodule containing wiki files result in
@@ -1219,40 +1318,74 @@ make changes to the wiki contents. Assuming structure as presented at
 
 = Summary <summary-chapter>
 
-The project introduces constraints that require novel solutions. Because of this
-novelty, only a subsection of the requirements has been implemented during the
-research period. Further work is necessary to move the implementation to a
-complete proof-of-concept but the architecture of the application is not
-expected to change significantly. The current selection of external packages is
-expected to facilitate the implementation of most of the missing capabilities.
+The goal of the project was to design and develop a distributed wiki which
+enables collaborative knowledge base development in scenarios that hinder the
+effectiveness of approaches based on centralized implementations of a wiki.
+Besides a requirements specification for an application that would serve as a
+proof of concept, the project includes user personas designed with software
+developers as the intended target audience.
 
-Most of the research time was spent on integrating the software with git which
-comes with a parsimonious API reference for libgit2 and assumes familiarity with
-many or even most of its _man page_ contents.
+== Results
 
-Further development and comparison of strategies described in
-@strategy_1_chapter and @strategy_2_chapter with consideration for additional
-features they could support would be a preferable next step. After the expected
-server-to-server communication is established the application should grow in the
-following areas to meet its proof-of-concept requirements:
-- further design and implementation of a client application used to publish
-  changes,
+The results of the project include:
+- User personas, a use case diagram, and requirements specification which are a
+  part of this document.
+- Description of implementation's software architecture.
+- Discussion of problems specific to the project.
+- Source code repository ready for further development.
+- Integration tests with utilities that simplify the creation of new tests.
+- Partial implementation of the specification.
+
+The implementation successfully:
+- initializes and configures a bare git repository for use by the server.
+- retrieves files from a git repository.
+- serves as a proxy to the hosted git repository supporting HTTP transport.
+- translates links in dedicated #wit scheme to HTTP URLs.
+- renders markdown files to HTML.
+- produces logging output.
+
+The research and design processes involved studying technologies such as
+libgit2, libp2p, and Kademlia DHT and a search for projects with similar goals,
+such as fedwiki. It is expected that the work put into searching for applicable
+package dependencies would make future work on the project easier.
+
+== Future Work
+
+The project introduced constraints that required novel approaches. An attempt at
+finding an employable solution for distributed version control that would fit #wit resulted
+in an outline of 2 possible strategies. Further research in this direction as
+well as a complete implementation of the server-to-server networking are crucial
+steps towards realisation of the software requirements.
+
+To meet the requirements the software should also develop further in the areas
+of:
+- CLI client application,
 - authorization and authentication,
-- support for marking pages as 'secret',
-- support for HTML, and text files.
-Once the proof-of-concept assumptions are met the development would benefit from
-involving users from the target audience of the application. It is expected that
-new features would need an introduction to make the experience of working with
-an application comfortable enough to be acceptable to its users. Especially the
-potential to enrich the HTML presentation of stored files remains uncharted.
+- support for multiple file types.
 
-To make the application usable in a professional environment its security
-promises should be revised and verified. In its current design #wit assumes that
-no further protection than the eventual implementation of authentication and
-authorization in a scope similar to that of GitLab would be required because all
-sensitive traffic can be configured to use HTTPS protocol and the contents of
-the files are never transmitted between servers unless the file is designated to
-be published. ]
+When considering the selection of a preferred approach to the outlined problem
+of distributed version control it would be a good idea to include in comparison
+the potential of supporting new features of #wit. Because the selected strategy
+would form the basis of a bulk of the application's functionality, the process
+should not be hurried, else it poses a risk of forming a significant technical
+debt. The considerable amount of work invested in solving technical problems of
+the implementation should be balanced by increased effort in gathering user
+feedback and analysing the potential use cases of the software.
+
+It is suspected that users could demand improvement regarding the security
+offered by the application and the user interface accessible through a web
+browser. The potential of user experience enhancements which the enrichment of
+the served through HTTP files could bring is underexplored.
+
+== Conclusions
+
+Taking an uncharted approach to problems related to specific structures within
+corporations resulted in the design of complex software. Whether the software
+could provide an answer to the troubles it aims to help with remains an open
+question. Further work on the proof-of-concept application is required to
+resolve the dilemma.
+
+]
 
 #set align(bottom)
 #line(length: 100%)

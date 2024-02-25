@@ -218,6 +218,8 @@
     ),
   )
 
+  counter(page).update(1)
+
   // empty page
   pagebreak()
 

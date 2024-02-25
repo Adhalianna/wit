@@ -759,3 +759,20 @@ tracing_env_logger_docs:
     type: web
     title: Docs.rs
     url: https://docs.rs/
+
+the_rust_book_ch_7:
+  title: Managing Growing Projects with Packages, Crates, and Modules
+  type: chapter
+  url: 
+    value: https://doc.rust-lang.org/stable/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
+    date: 2024-02-25
+  parent:
+    type: book
+    title: The Rust Programming Language
+    author:
+      - Klabnik, Steve
+      - Nichols, Carol
+      - the Rust Community
+    url:
+      value: https://doc.rust-lang.org/stable/book/
+      date: 2024-02-25
