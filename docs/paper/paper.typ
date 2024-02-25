@@ -25,6 +25,21 @@
 #show raw.where(block: true): set text(size: 1.125em) // slightly enlarge text
 #show raw.where(block: false): set text(weight: 550)
 
+#show ref: r => {
+  let elem = r.element
+  if elem != none and elem.func() == heading {
+    let num = numbering(elem.numbering, ..counter(heading).at(elem.location()))
+    num = num.trim(".", at: end)
+    if elem.level == 1 {
+      "Chapter " + num
+    } else {
+      "Section " + num
+    }
+  } else {
+    r
+  }
+}
+
 // ------ UTILS ------
 
 // Just a quick patch for how d2 renders SVGs
@@ -63,8 +78,7 @@
 
 // quickly create list-like table:
 #let list_table(header: none, ..content_lines) = {
-  show table: set block(breakable: true)
-  show grid: set block(breakable: true)
+  set block(breakable: true)
 
   let lines = if type(content_lines) == arguments {
     content_lines.pos()
@@ -267,7 +281,7 @@ To see what groceries need to be done check [this link](wit:list.md).
 #diploma(
   university_logo_file: "AGH.svg", university: "AGH University of Krakow", faculty: "Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical Engineering", titles: (paper_title, pl_paper_title), short_title: "Distributed Wiki on top of Git", author: (first_name: "Natalia", second_name: "Kinga", surname: "Goc"), degree_programme: "Computer Science", supervisor: "dr. inż. Krzysztof Kluza", location: "Kraków", acknowledgement: [
     I would love to say 'Thank you' to anyone who keeps making and promoting free
-    and open source software, plenty of which I have used to write this paper.
+    and open source software, plenty of which I have used to write this thesis.
   ], abstracts: [
     = Summary
     Contributing to the domain of applications offering a distributed wiki, the
@@ -279,7 +293,7 @@ To see what groceries need to be done check [this link](wit:list.md).
     Git for version control the project chooses to aim for a tight integration with
     the Git version control system and to focus on an audience which is most likely
     to use it. The described software introduces unique challenges which are
-    elaborated upon in the paper. Additionally, the paper describes the
+    elaborated upon in the document. Additionally, the thesis describes the
     implementation and the development of which led to discovering the challenges.
 
     = Streszczenie
@@ -344,9 +358,7 @@ confidential. The discussions were often motivated by a frustration resulting
 from a mismatch between followed by different teams practices and the
 imperfections of used by a company's knowledge-sharing platforms.
 
-The nature of those conversation was confidential and they cannot be further
-detailed. Instead, the following list of scenarios in which the #wit project has
-an ambition to help has been derived from them:
+The discussions have led to the development of the following list of scenarios in which the #wit project is intended to offer support:
 + When two teams within a single company or two companies choose to cooperate
   through a wiki while coordinating multiple related projects, because of the
   centralized nature of most wikis, a transfer of knowledge to a new platform is
@@ -381,7 +393,7 @@ level, imply a new authority controlling the data.
 
 Furthermore, #wit builds on top of git to achieve tight integration into
 git-based developer workflows. As it is meant to span over multiple
-repositories, the work done on the paper might bring some insight into the
+repositories, the work done on the thesis might bring some insight into the
 development of systems which aim for an extra layer of version control between
 independent systems like the ones researched by Schnöhoff et. al
 @version_in_federated_database.
@@ -389,7 +401,7 @@ independent systems like the ones researched by Schnöhoff et. al
 == Content of the Thesis
 
 The @theory-intro-chapter introduces the terminology related to the problem
-domain. @implementation-chapter desribes the implementation details, starting
+domain. @requirements-chapter presents the software requirements that set the direction of the project. @implementation-chapter desribes the implementation details, starting
 from the software architecture and continuing to specific problems unique to the
 project. The results of the project are elaborated upon in the @results-chapter.
 The @summary-chapter both summarizes the project and explores the potential for
@@ -575,6 +587,7 @@ Most notably those requirements do not include features such as:
 Those features while not being included in the proof-of-concept should be
 implemented in an application that would be a Minimal Viable Product (MVP).
 
+#show figure: set block(breakable: true)
 #figure(
   list_table(
     header: [Functional Requirements], [Wiki should support text files in the following formats: plain text, Markdown,
@@ -620,6 +633,8 @@ implemented in an application that would be a Minimal Viable Product (MVP).
   ],
 ) <fig_non_functional_requirements>
 
+#show figure: set block(breakable: false)
+
 = First Implementation Steps <implementation-chapter>
 
 This section describes how #wit implementation started, what decisions were made
@@ -629,7 +644,7 @@ in the process and what unique challenges have been discovered.
 
 #Wit has been implemented in the Rust programming language. The language comes
 with some tools that are considered a standard and its own terminology. The
-following are the terms used later in the paper:
+following are the terms used later in the thesis:
 
 / Cargo: A package manager as well as a build tool for Rust. Available as a CLI program
   which facilitates other utilities such as tests' compilation, and documentation
@@ -763,7 +778,7 @@ changes in such an environment requires a new strategy.
 During development, two distinct strategies were designed. One of them relies
 heavily on a libp2p crate and can be perceived as more complex in implementation
 because of the required integration with a new dependency. The source code
-attached to the paper contains a partial implementation of this strategy. The
+attached to the thesis contains a partial implementation of this strategy. The
 other one introduces a dedicated data structure and comes with its downsides but
 it limits the number of dependencies significantly.
 
@@ -1257,6 +1272,8 @@ make changes to the wiki contents. Assuming structure as presented at
 @fig_committing_to_wiki to commit files and achieve results as presented at
 @fig_committed_and_accessed.
 
+#pagebreak(weak: true)
+
 #figure(
   {
     let client_files = table(
@@ -1285,7 +1302,6 @@ make changes to the wiki contents. Assuming structure as presented at
   ],
 ) <fig_client_and_server_files>
 
-#pagebreak(weak: true)
 
 #figure(
   table(
@@ -1325,6 +1341,20 @@ Besides a requirements specification for an application that would serve as a
 proof of concept, the project includes user personas designed with software
 developers as the intended target audience.
 
+== Process
+
+Work on the project started with research of the problem domain. Parallel to the search the specification of the software was being developed. With no access to a potential user base, the requirements were limited to express a proof-of-concept application. Having found documentation of limited similar endeavours the effort shifted towards independent design and problem-solving.
+
+During development, multiple problems were met and resolved including:
+- translation of URI schemes as a part of markdown-to-HTML compilation,
+- implementation of an HTTP git transport as part of the server software through CGI,
+- definition of a testing environment and utilities that allow clean, parallel execution,
+- and other problems which were found to require less effort to solve.
+
+The work has slowed down significantly during the implementation of server-to-server communication which is the foundation of the 'distributed' aspect of the software.
+
+Observable results were obtained through the production of documentation and software development with the Rust programming language.
+
 == Results
 
 The results of the project include:
@@ -1346,8 +1376,8 @@ The implementation successfully:
 
 The research and design processes involved studying technologies such as
 libgit2, libp2p, and Kademlia DHT and a search for projects with similar goals,
-such as fedwiki. It is expected that the work put into searching for applicable
-package dependencies would make future work on the project easier.
+such as fedwiki. It is expected that the work which has been put into searching for applicable
+package dependencies will make future work on the project easier.
 
 == Future Work
 

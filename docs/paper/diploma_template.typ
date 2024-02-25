@@ -94,7 +94,6 @@
   set figure(gap: 1.5em)
   show figure: set par(leading: 1em)
   show figure: set place(clearance: 2em)
-  show figure: set block(breakable: true)
   // Stylize code/raw blocks
   show raw.where(block: true): set par(justify: false, linebreaks: "simple")
   // Stylize tables
@@ -103,24 +102,13 @@
   // Stylize lists
   set list(indent: 1.25em)
 
-  // ABSTRACTS
-  page(header: none, footer: none)[
-    #set heading(outlined: false, bookmarked: true)
-    #show heading.where(level: 1): hding => {
-      align(center)[ #text(weight: 700)[#upper()[ #hding ]] ]
-    }
-    #abstracts
-  ]
-  pagebreak()
-  pagebreak()
-
   // Default styling of content pages:
   set page(
     header: locate(
       header_loc => {
         set text(size: 0.8em)
-        let current_page_number = counter(page).at(header_loc).first()
-        let all_h1_appearing_after_header = query(heading.where(level: 1, outlined: true).after(header_loc), header_loc)
+        let current_page_number = header_loc.page()
+        let all_h1_appearing_after_header = query(heading.where(level: 1).after(header_loc), header_loc)
 
         let is_h1_page = false
 
@@ -173,8 +161,10 @@
           }
 
           if calc.even(current_page_number) {
+            current_page_number = counter(page).display()
             [ #current_page_number #h(1fr) #text_on_header ]
           } else {
+            current_page_number = counter(page).display()
             [ #text_on_header #h(1fr) #current_page_number ]
           }
 
@@ -187,13 +177,14 @@
     ),
     footer: locate(
       loc => {
-        let current_page_number = counter(page).at(loc).first()
+        let current_page_number = loc.page()
 
-        let h_before_footer = query(selector(heading).before(loc), loc).last()
+        let h1_before_footer = query(selector(heading.where(level: 1)).before(loc), loc).last()
+        
         let is_page_of_h1 = {
-          counter(heading).at(h_before_footer.location()) == counter(heading.where(level: 1)).at(loc)
+          true
         } and {
-          counter(page).at(h_before_footer.location()) == counter(page).at(loc)
+          h1_before_footer.location().page() == current_page_number
         }
 
         if not is_page_of_h1 {
@@ -207,11 +198,14 @@
           ]
           set text(size: 0.8em)
           if calc.even(current_page_number) {
+            current_page_number = counter(page).display()
             align(right)[#footer_text]
           } else {
+            current_page_number = counter(page).display()
             align(left)[#footer_text]
           }
         } else {
+          current_page_number = counter(page).display()
           align(center)[#text(size: 1em)[#current_page_number]]
         }
       },
@@ -220,8 +214,14 @@
 
   counter(page).update(1)
 
-  // empty page
-  pagebreak()
+  [
+    #set heading(outlined: false, bookmarked: true)
+    #show heading.where(level: 1): hding => {
+      align(center)[ #text(weight: 700)[#upper()[ #hding ]] ]
+    }
+    #abstracts
+    #pagebreak(to: "odd", weak: true)
+  ]
 
   // ACKNOWLEDGEMENTS
   if acknowledgement != none {
@@ -233,8 +233,8 @@
         ]
       ])
       #v(7.5%)
+      #pagebreak(to: "odd", weak: true)
     ]
-    pagebreak()
   }
 
   // TABLE OF CONTENTS
@@ -244,6 +244,7 @@
     }
     #outline(indent: true)
   ]
+  pagebreak(to: "odd", weak: true)
 
   counter(heading).update(0)
 
@@ -251,45 +252,45 @@
   [
     #set heading(numbering: "1.")
     #show heading.where(level: 1): hding => {
-      pagebreak(weak: true)
+      pagebreak(weak: true, to: "odd")
       align(top + left)[#hding]
     }
 
-    // Skip outlining headers which are "alone" at their depth.
-    // Require at least two headings at a given depth to get them outlined.
-    // ... for some reason this doesn't actually work despite detecting
-    // correctly "lone" headings.
-    #show heading: hding => {
-      let hding_func = hding.func()
-      let loc = hding.location()
+    // // Skip outlining headers which are "alone" at their depth.
+    // // Require at least two headings at a given depth to get them outlined.
+    // // ... for some reason this doesn't actually work despite detecting
+    // // correctly "lone" headings.
+    // #show heading: hding => {
+    //   let hding_func = hding.func()
+    //   let loc = hding.location()
 
-      let counter_elements = counter(heading).at(loc)
+    //   let counter_elements = counter(heading).at(loc)
 
-      if counter_elements.last() == 1 {
-        let depth_level = counter_elements.len()
+    //   if counter_elements.last() == 1 {
+    //     let depth_level = counter_elements.len()
 
-        let headings_at_same_level = query(heading.where(level: depth_level).after(loc), loc)
+    //     let headings_at_same_level = query(heading.where(level: depth_level).after(loc), loc)
 
-        if headings_at_same_level.len() != 0 {
-          let next_at_same_level = headings_at_same_level.first()
-          let next_counter = counter(heading).at(next_at_same_level.location())
+    //     if headings_at_same_level.len() != 0 {
+    //       let next_at_same_level = headings_at_same_level.first()
+    //       let next_counter = counter(heading).at(next_at_same_level.location())
 
-          if next_counter.last() != 2 {
-            set heading(outlined: false)
-            hding
-          } else {
-            set heading(outlined: true)
-            hding
-          }
-        } else {
-          set heading(outlined: false)
-          hding
-        }
-      } else {
-        set heading(outlined: true)
-        hding
-      }
-    }
+    //       if next_counter.last() != 2 {
+    //         set heading(outlined: false)
+    //         hding
+    //       } else {
+    //         set heading(outlined: true)
+    //         hding
+    //       }
+    //     } else {
+    //       set heading(outlined: false)
+    //       hding
+    //     }
+    //   } else {
+    //     set heading(outlined: true)
+    //     hding
+    //   }
+    // }
 
     //// add pagebreak after content under heading level 1 and before heading level 2
     //#show heading: hding => {
